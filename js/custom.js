@@ -109,9 +109,7 @@ function createFruitElements(fruitArray) {
   });
 }
 
-window.addEventListener("load", function (event) {
-  
-  createFruitElements(fruitArray);
+function giveShoppingCartButton() {
 
   let shoppingCartButton = document.getElementById("shoppingCartButton");
   let shoppingCartMessage = document.getElementById("shoppingCartMessage");
@@ -163,4 +161,13 @@ window.addEventListener("load", function (event) {
 
     shoppingCartArray = [];
   });
+
+}
+
+window.addEventListener("load", function (event) {
+  
+  createFruitElements(fruitArray);
+
+  giveShoppingCartButton();
+  
 });

@@ -1,0 +1,226 @@
+{
+  "fruits": [
+    {
+      "mask": "apple",
+      "name": "Manzana",
+      "price": 2.04,
+      "season": {
+        "mask": "winter",
+        "name": "Invierno"
+      },
+      "refrigerate": true
+    },
+    {
+      "mask": "banana",
+      "name": "Plátano",
+      "price": 1.65,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Islas Canarias"
+    },
+    {
+      "mask": "blackberry",
+      "name": "Mora",
+      "price": 17.52,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "mask": "blueberry",
+      "name": "Arándano",
+      "price": 14.49,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Canadá"
+    },
+    {
+      "mask": "cherry",
+      "name": "Cereza",
+      "price": 12.63,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Extremadura"
+    },
+    {
+      "mask": "grape",
+      "name": "Uva",
+      "price": 4.03,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Castilla y León"
+    },
+    {
+      "mask": "kiwi",
+      "name": "Kiwi",
+      "price": 4.49,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Nueva Zelanda"
+    },
+    {
+      "mask": "lemon",
+      "name": "Limón",
+      "price": 2.7,
+      "season": {
+        "mask": "winter",
+        "name": "Invierno"
+      },
+      "refrigerate": false
+    },
+    {
+      "mask": "lime",
+      "name": "Lima",
+      "price": 4.07,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Colombia"
+    },
+    {
+      "mask": "mango",
+      "name": "Mango",
+      "price": 3.46,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Brasil"
+    },
+    {
+      "mask": "melon",
+      "name": "Melón",
+      "price": 0.92,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Murcia"
+    },
+    {
+      "mask": "orange",
+      "name": "Naranja",
+      "price": 2.4,
+      "season": {
+        "mask": "winter",
+        "name": "Invierno"
+      },
+      "refrigerate": false
+    },
+    {
+      "mask": "papaya",
+      "name": "Papaya",
+      "price": 5.05,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Ecuador"
+    },
+    {
+      "mask": "peach",
+      "name": "Melocotón",
+      "price": 3.56,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "mask": "pear",
+      "name": "Pera",
+      "price": 2.54,
+      "season": {
+        "mask": "winter",
+        "name": "Invierno"
+      },
+      "refrigerate": true
+    },
+    {
+      "mask": "pineapple",
+      "name": "Piña",
+      "price": 1.95,
+      "season": {
+        "mask": "winter",
+        "name": "Invierno"
+      },
+      "refrigerate": false
+    },
+    {
+      "mask": "raspberry",
+      "name": "Frambuesa",
+      "price": 13.92,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Estados Unidos"
+    },
+    {
+      "mask": "strawberry",
+      "name": "Fresa",
+      "price": 7.13,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": true,
+      "region": "Andalucía"
+    },
+    {
+      "mask": "watermelon",
+      "name": "Sandía",
+      "price": 0.85,
+      "season": {
+        "mask": "summer",
+        "name": "Verano"
+      },
+      "local": false,
+      "region": "Marruecos"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "date": "05/2023",
+      "products": [
+        {
+          "fruitID": 7,
+          "totalAmount": 45.78,
+          "totalKilos": 5
+        },
+        {
+          "fruitID": 1,
+          "totalAmount": 37.23,
+          "totalKilos": 3
+        }
+      ]
+    }
+  ]
+}

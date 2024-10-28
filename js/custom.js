@@ -1,43 +1,38 @@
-let appleDataArray = { mask: "apple", name: "Manzana", price: 2.04 };
-let bananaDataArray = { mask: "banana", name: "Plátano", price: 1.65 };
-// let blackberryDataArray = {mask: "blackberry", name: "Mora", price: 17.52};
-let blueberryDataArray = {
-  mask: "blueberry",
-  name: "Arándano",
-  price: 14.49,
-};
-//let cherryDataArray = { mask: "cherry", name: "Cereza", price: 12.63};
-// let grapeDataArray = {mask: "grape", name: "Uva", price: 4.03};
-let lemonDataArray = { mask: "lemon", name: "Limón", price: 2.7 };
-// let limeDataArray = {mask: "lime", name: "Lima", price: 4.07};
-// let mangoDataArray = {mask: "mango", name: "Mango", price: 3.46};
-let melonDataArray = { mask: "melon", name: "Melón", price: 0.92 };
-let orangeDataArray = { mask: "orange", name: "Naranja", price: 2.4 };
-// let papayaDataArray = {mask: "papaya", name: "Papaya", price: 5.05};
-let pearDataArray = { mask: "pear", name: "Pera", price: 2.54 };
-let pineappleDataArray = { mask: "pineapple", name: "Piña", price: 1.95 };
-// let raspberryDataArray = {mask: "raspberry", name: "Frambuesa", price: 13.92};
-let strawberryDataArray = { mask: "strawberry", name: "Fresa", price: 7.13 };
-let watermelonDataArray = { mask: "watermelon", name: "Sandía", price: 0.85 };
-
-let fruitArray = [
-  appleDataArray,
-  bananaDataArray,
-  blueberryDataArray,
-  lemonDataArray,
-  melonDataArray,
-  orangeDataArray,
-  pearDataArray,
-  pineappleDataArray,
-  strawberryDataArray,
-  watermelonDataArray,
-];
-
+var host = "http://localhost:3000";
 let shoppingCartArray = [];
+var fruitArray = [];
 
-fruitArray.sort((a, b) =>
-  a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
-);
+window.addEventListener("load", startApplication());
+
+function startApplication() {
+
+  getFruitArrayFromAPI().then(fruits => {
+    fruitArray = fruits;
+
+    fruitArray.sort((a, b) =>
+      a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
+    );
+    createFruitElements(fruitArray);
+    giveShoppingCartButton();
+  });
+
+}
+
+function getFruitArrayFromAPI() {
+  return fetch(host + "/fruits")
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        console.error("Error HTTP:", response.status, "(", response.statusText, ")");
+        return [];
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      return [];
+    });
+}
 
 function createFruitElements(fruitArray) {
   let fruitContainer = document.getElementById("fruitContainer");
@@ -110,7 +105,6 @@ function createFruitElements(fruitArray) {
 }
 
 function giveShoppingCartButton() {
-
   let shoppingCartButton = document.getElementById("shoppingCartButton");
   let shoppingCartMessage = document.getElementById("shoppingCartMessage");
 
@@ -161,13 +155,4 @@ function giveShoppingCartButton() {
 
     shoppingCartArray = [];
   });
-
 }
-
-window.addEventListener("load", function (event) {
-  
-  createFruitElements(fruitArray);
-
-  giveShoppingCartButton();
-  
-});

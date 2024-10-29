@@ -10,27 +10,50 @@
   </head>
 
   <body>
-    <div class="container-fluid">
-      <div class="container py-3">
-        <div class="row bg-dark-subtle rounded-top-3 border border-1">
-          <h1 class="text-center">Frutería</h1>
-        </div>
-        <div id="fruitContainer" class="row py-3 row-gap-3 bg-body-tertiary rounded-bottom-3 border border-1 border-top-0">
-          <!-- Generated with Javascript -->
-        </div>
-      </div>
-      <div class="container py-3">
-        <div class="row bg-dark-subtle rounded-top-3 border border-1">
-          <h1 class="text-center">Carrito</h1>
-          <!-- Generated with Javascript -->
-        </div>
-        <div class="row pt-3 pb-2 row-gap-3 bg-body-tertiary rounded-bottom-3 border border-1 border-top-0">
-          <h6 id="shoppingCartMessage" class="text-center">Vacío</h6>
-          <div class="btn-group">
-            <button id="shoppingCartButton" class="btn btn-success px-3" type="button">Mostrar</button>         
+      <div id="customContainer">
+        <div id="kk" class="row p-2">
+
+          <!-- <div class="col-12 bg-dark-subtle rounded-top-3 border border-1">
+              <h1 class="text-center">Frutería</h1>
+          </div> -->
+
+          <div class="col-9">          
+            <div
+              id="fruitContainer"
+              class="row py-3 row-gap-3 bg-body-tertiary rounded-bottom-3 border border-1 border-top-0 overflow-y-scroll">
+              <!-- Generated with Javascript -->
+            </div>
+
+            <div id="shoppingCart" class="row overflow-hidden">
+              <div class="col-12 bg-dark-subtle rounded-top-3 border border-1">
+                <h1 class="text-center">Carrito</h1>
+                <!-- Generated with Javascript -->
+              </div>
+              <div class="col-12 pt-3 pb-2 row-gap-3 bg-body-tertiary rounded-bottom-3 border border-1 border-top-0">
+                <h6 id="shoppingCartMessage" class="text-center">Vacío</h6>
+                <div class="btn-group">
+                  <button
+                    id="shoppingCartButton"
+                    class="btn btn-success px-3"
+                    type="button"
+                  >
+                    Mostrar
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
+          
+          <div class="col-3">
+            <div class="row bg-dark-subtle rounded border border-1">
+              <div class="col-12">
+
+              </div>
+            </div>
+          </div>
+
         </div>
+
       </div>
-    </div>
   </body>
 </html>

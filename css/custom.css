@@ -11844,5 +11844,21 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+html, body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+#customContainer {
+  max-height: 100vh;
+}
+
+#fruitContainer {
+  height: 75vh;
+}
+
+#shoppingCart {
+  height: 25vh;
+}
 
 /*# sourceMappingURL=custom.css.map */

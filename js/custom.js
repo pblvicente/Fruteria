@@ -6,7 +6,7 @@ window.addEventListener("load", startApplication());
 
 function startApplication() {
 
-  getFruitArrayFromAPI().then(fruits => {
+  getFruitsArrayFromAPI().then(fruits => {
     fruitArray = fruits;
 
     fruitArray.sort((a, b) =>
@@ -18,7 +18,7 @@ function startApplication() {
 
 }
 
-function getFruitArrayFromAPI() {
+function getFruitsArrayFromAPI() {
   return fetch(host + "/fruits")
     .then(response => {
       if (response.ok) {
@@ -39,7 +39,7 @@ function createFruitElements(fruitArray) {
 
   fruitArray.forEach((fruit) => {
     let column = document.createElement("div");
-    column.classList.add("col-12", "col-sm-4", "col-lg-3");
+    column.classList.add("col-12", "col-sm-4", "col-lg-2");
 
     let card = document.createElement("div");
     card.classList.add("card");

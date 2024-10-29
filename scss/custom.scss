@@ -4,4 +4,26 @@
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+html, body {
+
+    height: 100vh;
+    overflow: hidden;
+
+}
+
+#customContainer {
+
+    max-height: 100vh;
+
+}
+
+#fruitContainer {
+
+    height: 75vh;
+
+}
+
+#shoppingCart {
+    height: 25vh;
+}
 // Then add additional custom code here

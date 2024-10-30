@@ -39,7 +39,7 @@ function createFruitElements(fruitArray) {
 
   fruitArray.forEach((fruit) => {
     let column = document.createElement("div");
-    column.classList.add("col-12", "col-sm-4", "col-lg-2");
+    column.classList.add("col");
 
     let card = document.createElement("div");
     card.classList.add("card");

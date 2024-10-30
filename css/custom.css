@@ -11844,21 +11844,66 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-html, body {
-  height: 100vh;
-  overflow: hidden;
-}
-
-#customContainer {
-  max-height: 100vh;
+#pageTitle {
+  background-color: #343a40;
 }
 
 #fruitContainer {
-  height: 75vh;
+  background-color: rgb(12.8, 80.4, 60.4);
 }
 
-#shoppingCart {
-  height: 25vh;
+#shoppingCartTitle {
+  background-color: #495057;
+}
+
+#shoppingCartMessageContainer {
+  background-color: rgb(19.2, 120.6, 90.6);
+}
+
+#shoppingCartButtonContainer {
+  background-color: rgb(19.2, 120.6, 90.6);
+}
+
+#shoppingCartButton {
+  background-color: rgba(30, 30, 30, 0.25);
+}
+
+#productPanelTitle {
+  background-color: #495057;
+}
+
+#productPanel {
+  background-color: rgb(25.6, 160.8, 120.8);
+}
+
+@media screen and (min-width: 1400px) {
+  #customContainer {
+    height: 100vh;
+  }
+  #pageTitle {
+    height: 5vh;
+  }
+  #fruitContainer {
+    height: 65vh;
+    overflow-y: scroll;
+  }
+  #shoppingCartTitle {
+    height: 5vh;
+  }
+  #shoppingCartMessageContainer {
+    height: 20vh;
+    overflow-y: scroll;
+  }
+  #shoppingCartButtonContainer {
+    height: 5vh;
+  }
+  #productPanelTitle {
+    height: 5vh;
+  }
+  #productPanel {
+    height: 90vh;
+    overflow-y: scroll;
+  }
 }
 
 /*# sourceMappingURL=custom.css.map */

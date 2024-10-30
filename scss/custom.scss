@@ -4,26 +4,71 @@
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-html, body {
-
-    height: 100vh;
-    overflow: hidden;
-
-}
-
-#customContainer {
-
-    max-height: 100vh;
-
+#pageTitle {
+  background-color: $gray-800;
 }
 
 #fruitContainer {
-
-    height: 75vh;
-
+  background-color: $teal-800;
 }
 
-#shoppingCart {
-    height: 25vh;
+#shoppingCartTitle {
+  background-color: $gray-700;
 }
-// Then add additional custom code here
+
+#shoppingCartMessageContainer {
+  background-color: $teal-700;
+}
+
+#shoppingCartButtonContainer {
+  background-color: $teal-700;
+}
+
+#shoppingCartButton {
+    background-color: rgba($color: rgb(30, 30, 30), $alpha: 0.25);
+}
+
+#productPanelTitle {
+  background-color: $gray-700;
+}
+
+#productPanel {
+  background-color: $teal-600;
+}
+
+@media screen and (min-width: 1400px) {
+  #customContainer {
+    height: 100vh;
+  }
+
+  #pageTitle {
+    height: 5vh;
+  }
+
+  #fruitContainer {
+    height: 65vh;
+    overflow-y: scroll;
+  }
+
+  #shoppingCartTitle {
+    height: 5vh;
+  }
+
+  #shoppingCartMessageContainer {
+    height: 20vh;
+    overflow-y: scroll;
+  }
+
+  #shoppingCartButtonContainer {
+    height: 5vh;
+  }
+
+  #productPanelTitle {
+    height: 5vh;
+  }
+
+  #productPanel {
+    height: 90vh;
+    overflow-y: scroll;
+  }
+}

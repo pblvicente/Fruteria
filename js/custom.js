@@ -1,12 +1,11 @@
-var host = "http://localhost:3000";
-let shoppingCartArray = [];
+const host = "http://localhost:3000";
 var fruitArray = [];
+var shoppingCartArray = [];
 
 window.addEventListener("load", startApplication());
 
 function startApplication() {
-
-  getFruitsArrayFromAPI().then(fruits => {
+  getFruitsArrayFromAPI().then((fruits) => {
     fruitArray = fruits;
 
     fruitArray.sort((a, b) =>
@@ -15,20 +14,25 @@ function startApplication() {
     createFruitElements(fruitArray);
     giveShoppingCartButton();
   });
-
 }
 
 function getFruitsArrayFromAPI() {
   return fetch(host + "/fruits")
-    .then(response => {
+    .then((response) => {
       if (response.ok) {
         return response.json();
       } else {
-        console.error("Error HTTP:", response.status, "(", response.statusText, ")");
+        console.error(
+          "Error HTTP:",
+          response.status,
+          "(",
+          response.statusText,
+          ")"
+        );
         return [];
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       return [];
     });
@@ -62,11 +66,11 @@ function createFruitElements(fruitArray) {
       if (shoppingCartArray.length <= 0) {
         document.getElementById("shoppingCartMessage").innerHTML = "Vacío";
       }
-
+    
       let target = shoppingCartArray.findIndex(
         (element) => element.mask == img.alt
       );
-
+    
       if (target == -1) {
         shoppingCartArray.push({
           mask: fruit.mask,
@@ -76,7 +80,7 @@ function createFruitElements(fruitArray) {
         });
       } else {
         shoppingCartArray[target].quantity =
-          shoppingCartArray[target].quantity + 1;
+        shoppingCartArray[target].quantity + 1;
       }
     });
 
@@ -84,7 +88,12 @@ function createFruitElements(fruitArray) {
     cardBody.classList.add("card-body");
 
     let rowFruitInfo = document.createElement("div");
-    rowFruitInfo.classList.add("row", "justify-content-between", "card-text");
+    rowFruitInfo.classList.add(
+      "row",
+      "gy-1",
+      "justify-content-between",
+      "card-text"
+    );
 
     let colFruitName = document.createElement("div");
     colFruitName.classList.add("col", "text-truncate");
@@ -94,6 +103,18 @@ function createFruitElements(fruitArray) {
     colFruitPrice.classList.add("col-12", "col-md-auto");
     colFruitPrice.innerHTML = fruit.price + "&#8364";
 
+    let colFruitInputContainer = document.createElement("div");
+    colFruitInputContainer.classList.add("col-12");
+
+    let colFruitInput = document.createElement("input");
+    colFruitInput.type = "number";
+    colFruitInput.id = fruit.mask;
+    colFruitInput.name = fruit.mask;
+    colFruitInput.value = 0;
+    colFruitInput.min = 0;
+    colFruitInput.max = 100;
+    colFruitInput.classList.add("form-control");
+
     fruitContainer.appendChild(column);
     column.appendChild(card);
     card.appendChild(img);
@@ -101,8 +122,10 @@ function createFruitElements(fruitArray) {
     cardBody.appendChild(rowFruitInfo);
     rowFruitInfo.appendChild(colFruitName);
     rowFruitInfo.appendChild(colFruitPrice);
+    rowFruitInfo.appendChild(colFruitInputContainer);
+    colFruitInputContainer.appendChild(colFruitInput);
   });
-}
+}  
 
 function giveShoppingCartButton() {
   let shoppingCartButton = document.getElementById("shoppingCartButton");

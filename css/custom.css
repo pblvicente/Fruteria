@@ -11861,6 +11861,11 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: rgb(25, 135, 84);
 }
 
+.imgCustom {
+  width: 100%;
+  max-width: 32px;
+}
+
 #pageTitle {
   background-color: #343a40;
 }
@@ -11885,11 +11890,14 @@ textarea.form-control-lg {
   background-color: #495057;
 }
 
-#productPanel {
+#productPanelMessageContainer {
   background-color: rgb(25.6, 160.8, 120.8);
 }
 
 @media screen and (min-width: 1400px) {
+  .imgCustom {
+    width: 32px;
+  }
   #customContainer {
     height: 100vh;
   }
@@ -11913,7 +11921,7 @@ textarea.form-control-lg {
   #productPanelTitle {
     height: 5vh;
   }
-  #productPanel {
+  #productPanelMessageContainer {
     height: 90vh;
     overflow-y: scroll;
   }

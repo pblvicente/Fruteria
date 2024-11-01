@@ -21,6 +21,13 @@
   --bs-btn-disabled-border-color: rgb(25, 135, 84);
 }
 
+.imgCustom {
+
+  width: 100%;
+  max-width: 32px;
+
+}
+
 #pageTitle {
   background-color: $gray-800;
 }
@@ -45,11 +52,17 @@
   background-color: $gray-700;
 }
 
-#productPanel {
+#productPanelMessageContainer {
   background-color: $teal-600;
 }
 
 @media screen and (min-width: 1400px) {
+  .imgCustom {
+
+    width: 32px;
+
+  }
+
   #customContainer {
     height: 100vh;
   }
@@ -80,7 +93,7 @@
     height: 5vh;
   }
 
-  #productPanel {
+  #productPanelMessageContainer {
     height: 90vh;
     overflow-y: scroll;
   }

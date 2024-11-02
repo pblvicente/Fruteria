@@ -22,17 +22,6 @@
       "region": "Islas Canarias"
     },
     {
-      "mask": "blackberry",
-      "name": "Mora",
-      "price": 17.52,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": true,
-      "region": "Castilla-La Mancha"
-    },
-    {
       "mask": "blueberry",
       "name": "Arándano",
       "price": 14.49,
@@ -44,39 +33,6 @@
       "region": "Canadá"
     },
     {
-      "mask": "cherry",
-      "name": "Cereza",
-      "price": 12.63,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": true,
-      "region": "Extremadura"
-    },
-    {
-      "mask": "grape",
-      "name": "Uva",
-      "price": 4.03,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": true,
-      "region": "Castilla y León"
-    },
-    {
-      "mask": "kiwi",
-      "name": "Kiwi",
-      "price": 4.49,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": false,
-      "region": "Nueva Zelanda"
-    },
-    {
       "mask": "lemon",
       "name": "Limón",
       "price": 2.7,
@@ -85,28 +41,6 @@
         "name": "Invierno"
       },
       "refrigerate": false
-    },
-    {
-      "mask": "lime",
-      "name": "Lima",
-      "price": 4.07,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": false,
-      "region": "Colombia"
-    },
-    {
-      "mask": "mango",
-      "name": "Mango",
-      "price": 3.46,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": false,
-      "region": "Brasil"
     },
     {
       "mask": "melon",
@@ -130,28 +64,6 @@
       "refrigerate": false
     },
     {
-      "mask": "papaya",
-      "name": "Papaya",
-      "price": 5.05,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": false,
-      "region": "Ecuador"
-    },
-    {
-      "mask": "peach",
-      "name": "Melocotón",
-      "price": 3.56,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": true,
-      "region": "Comunidad Valenciana"
-    },
-    {
       "mask": "pear",
       "name": "Pera",
       "price": 2.54,
@@ -170,17 +82,6 @@
         "name": "Invierno"
       },
       "refrigerate": false
-    },
-    {
-      "mask": "raspberry",
-      "name": "Frambuesa",
-      "price": 13.92,
-      "season": {
-        "mask": "summer",
-        "name": "Verano"
-      },
-      "local": false,
-      "region": "Estados Unidos"
     },
     {
       "mask": "strawberry",

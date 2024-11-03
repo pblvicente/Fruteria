@@ -8,7 +8,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": true
+      "refrigerate": true,
+      "id": "8f20"
     },
     {
       "mask": "banana",
@@ -19,7 +20,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Islas Canarias"
+      "region": "Islas Canarias",
+      "id": "fba5"
     },
     {
       "mask": "blueberry",
@@ -30,7 +32,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Canadá"
+      "region": "Canadá",
+      "id": "0f13"
     },
     {
       "mask": "lemon",
@@ -40,7 +43,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": false
+      "refrigerate": false,
+      "id": "cd58"
     },
     {
       "mask": "melon",
@@ -51,7 +55,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Murcia"
+      "region": "Murcia",
+      "id": "7930"
     },
     {
       "mask": "orange",
@@ -61,7 +66,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": false
+      "refrigerate": false,
+      "id": "18c9"
     },
     {
       "mask": "pear",
@@ -71,7 +77,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": true
+      "refrigerate": true,
+      "id": "b3aa"
     },
     {
       "mask": "pineapple",
@@ -81,7 +88,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": false
+      "refrigerate": false,
+      "id": "e227"
     },
     {
       "mask": "strawberry",
@@ -92,7 +100,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Andalucía"
+      "region": "Andalucía",
+      "id": "fc09"
     },
     {
       "mask": "watermelon",
@@ -103,25 +112,11 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Marruecos"
+      "region": "Marruecos",
+      "id": "64a3"
     }
   ],
   "orders": [
-    {
-      "id": 1,
-      "date": "05/2023",
-      "products": [
-        {
-          "fruitID": 7,
-          "totalAmount": 45.78,
-          "totalKilos": 5
-        },
-        {
-          "fruitID": 1,
-          "totalAmount": 37.23,
-          "totalKilos": 3
-        }
-      ]
-    }
+    
   ]
 }

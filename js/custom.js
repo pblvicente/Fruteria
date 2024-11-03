@@ -115,18 +115,14 @@ function giveFunctionalityToClickOnFruitImage(fruit, input) {
 
 function createOrUpdateFruitOnShoppingCart(fruit, numberSelected) {
 
-  let targetIndex = shoppingCartArray.products.findIndex((element) => element.fruitID == fruit.id);
+  let targetIndex = shoppingCartArray.products.findIndex((product) => product.fruitInfo.id == fruit.id);
 
   if (targetIndex == -1) {
     shoppingCartArray.products.push({
-      fruitID: fruit.id,
-      fruitName: fruit.name,
-      fruitPrice: fruit.price,
-      totalAmount: numberSelected * fruit.price,
+      fruitInfo: fruit,
       totalKilos: numberSelected
     });
   } else {
-    shoppingCartArray.products[targetIndex].totalAmount = shoppingCartArray.products[targetIndex].totalAmount + (numberSelected * fruit.price);
     shoppingCartArray.products[targetIndex].totalKilos = shoppingCartArray.products[targetIndex].totalKilos + numberSelected;
   }
 
@@ -202,7 +198,11 @@ function sendShoppingCartToJsonServer() {
   shoppingCartArray.date = getDate();
   let shoppingCartArrayToJSON = {
     ...shoppingCartArray,
-    products: shoppingCartArray.products.map(({ fruitName, fruitPrice, ...rest }) => rest)
+    products: shoppingCartArray.products.map(product => ({
+      fruitID: product.fruitInfo.id,
+      totalAmount: (product.fruitInfo.price * product.totalKilos).toFixed(2),
+      totalKilos: product.totalKilos
+    }))
   };
   
   let URL = host + "/orders";  
@@ -217,6 +217,8 @@ function sendShoppingCartToJsonServer() {
   .then(responseData =>  {
     console.log(responseData);
     createShoppingCartMessage();
+    createShoppingCartFruitPeculiaritiesWindow()
+    setDefaultStateOfApplication()      
   })
   .catch(error => console.error(error));
   
@@ -241,13 +243,13 @@ function createShoppingCartMessage() {
   shoppingCartArray.products
   .slice()
   .sort((a, b) =>
-    b.fruitName.toLocaleLowerCase().localeCompare(a.fruitName.toLocaleLowerCase()))
+    b.fruitInfo.name.toLocaleLowerCase().localeCompare(a.fruitInfo.name.toLocaleLowerCase()))
   .forEach((product) => {
 
-    shoppingCartTotalAmount = shoppingCartTotalAmount + product.totalAmount;
+    shoppingCartTotalAmount = shoppingCartTotalAmount + (product.fruitInfo.price * product.totalKilos);
     shoppingCartTotalKilos = shoppingCartTotalKilos + product.totalKilos;
 
-    let productName = product.fruitName;
+    let productName = product.fruitInfo.name;
     let productKilos = product.totalKilos + " kilo"
     
     if (product.totalKilos > 1) {
@@ -263,9 +265,9 @@ function createShoppingCartMessage() {
     let productKilosCol = createElementWithClassNames("div", ["col-auto"]);
     productKilosCol.innerHTML = productKilos 
     let productPriceKiloCol = createElementWithClassNames("div", ["col-auto"]);
-    productPriceKiloCol.innerHTML = (product.fruitPrice).toFixed(2) + "&#8364"
+    productPriceKiloCol.innerHTML = (product.fruitInfo.price).toFixed(2) + "&#8364"
     let productTotalAmountCol = createElementWithClassNames("div", ["col-auto"]);
-    productTotalAmountCol.innerHTML = product.totalAmount.toFixed(2) + "&#8364"
+    productTotalAmountCol.innerHTML = (product.fruitInfo.price * product.totalKilos).toFixed(2) + "&#8364"
 
     shoppingCartMessage.appendChild(productRow);
     productRow.appendChild(productNameCol);
@@ -286,6 +288,76 @@ function createShoppingCartMessage() {
   totalAmountRow.appendChild(totalAmountCol)
   shoppingCartMessage.appendChild(averageAmountRow);
   averageAmountRow.appendChild(averageAmountCol)
+
+}
+
+function createShoppingCartFruitPeculiaritiesWindow() {
+
+  let width = 720;
+  let height = 480;
+
+  let left = (window.innerWidth / 2) - (width / 2);
+  let top = (window.innerHeight / 2) - (height / 2);
+
+  let newWindow = window.open("", "fruitPeculiaritiesWindow", "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left);  
+
+  let modalContainer = newWindow.document.createElement('div');
+  modalContainer.classList.add("row", "px-2", "align-items-center", "justify-content-center")  
+  
+  let heading = newWindow.document.createElement("div");
+  heading.classList.add("col-12")
+  heading.innerText = "Información Frutas";
+  
+  newWindow.document.body.appendChild(modalContainer);
+  modalContainer.appendChild(heading);
+
+  shoppingCartArray.products.forEach((product) => {
+
+    let paragraph = newWindow.document.createElement("div");
+    paragraph.classList.add("col-auto")
+
+    let productName = product.fruitInfo.name;
+      
+    productName = productName.endsWith("ón")
+      ? productName.replace("ón", "ones")
+      : productName + "s";
+
+    let message = "Las " + productName + " son frutas de " + product.fruitInfo.season.name;
+
+    if(product.fruitInfo.season.mask == "summer") {
+
+      let selection = (product.fruitInfo.local) ? ", de proximidad" : ", NO es de proximidad";
+
+      message = message + selection + " y están recogidas en " + product.fruitInfo.region + ".";
+
+    } else {
+
+      let selection = (product.fruitInfo.refrigerate) ? " y es recomendable conservarlas en la nevera." : " NO hace falta conservarlas en la nevera.";
+      message = message + selection;
+
+    }   
+
+    paragraph.innerText = message
+
+    modalContainer.appendChild(paragraph);
+
+  });
+
+}
+
+function setDefaultStateOfApplication() {
+
+  setTimeout(() => {
+    
+    createEmptyMessageElement("productPanelMessage");
+    createEmptyMessageElement("shoppingCartMessage");
+    
+    shoppingCartArray = {
+      date: "",
+      products: []
+    };
+
+  }, 10000);
 
 }
 
@@ -322,6 +394,7 @@ function createElementWithClassNames(element, classNames) {
 function createEmptyMessageElement(id) {
 
   let div = document.getElementById(id);
+  div.replaceChildren();
   div.classList.replace("align-self-start", "align-self-center");
   let h6 = createElementWithClassNames("h6", "text-center");
   h6.innerText = "Vacío";

@@ -2,5 +2,10 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "json-server": "^1.0.0-beta.3"
+  },
+  "scripts": {
+    "start-json-server": "json-server --watch ./json/fruteria.json --port 3000",
+    "start-sass": "sass --watch ./scss/custom.scss ./css/custom.css",
+    "start-json-server-alt": "json-server --watch ./json/fruteria_ALT.json --port 3000"
   }
 }

@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "Fruteria"
+		}
+	],
+	"settings": {
+		"liveServer.settings.AdvanceCustomBrowserCmdLine": "",
+		"liveServer.settings.CustomBrowser": "microsoft-edge",
+		"liveServer.settings.ignoreFiles": [
+
+			".vscode/**",
+			"**/*.scss",
+			"**/*.sass",
+			"**/*.ts",
+			"node_modules/**",
+			"json/**"
+		]
+	}
+}

@@ -279,7 +279,7 @@ function createShoppingCartMessage() {
 
   let totalAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let totalAmountCol = createElementWithClassNames("div", ["col-auto"]);
-  totalAmountCol.innerHTML = "Precio total: " + shoppingCartTotalAmount.toFixed(2) + " &#8364"
+  totalAmountCol.innerHTML = "Precio total: " + Math.floor(shoppingCartTotalAmount).toFixed(2) + " &#8364"
   let averageAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let averageAmountCol = createElementWithClassNames("div", ["col-auto"]);
   averageAmountCol.innerHTML = "Precio medio: " + (shoppingCartTotalAmount / shoppingCartTotalKilos).toFixed(3) + " &#8364/kg"
@@ -292,57 +292,53 @@ function createShoppingCartMessage() {
 }
 
 function createShoppingCartFruitPeculiaritiesWindow() {
-
   let width = 720;
   let height = 480;
 
   let left = (window.innerWidth / 2) - (width / 2);
   let top = (window.innerHeight / 2) - (height / 2);
 
-  let newWindow = window.open("", "fruitPeculiaritiesWindow", "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left);  
+  let newWindow = window.open("./subpage/window/fruitInformationWindow.html", "fruitPeculiaritiesWindow", `width=${width},height=${height},top=${top},left=${left}`);
 
-  let modalContainer = newWindow.document.createElement('div');
-  modalContainer.classList.add("row", "px-2", "align-items-center", "justify-content-center")  
-  
-  let heading = newWindow.document.createElement("div");
-  heading.classList.add("col-12")
-  heading.innerText = "Información Frutas";
-  
-  newWindow.document.body.appendChild(modalContainer);
-  modalContainer.appendChild(heading);
+  if (!newWindow) {
+    console.error("Failed to open new window.");
+    return;
+  }
 
-  shoppingCartArray.products.forEach((product) => {
+  newWindow.addEventListener("load", () => {
 
-    let paragraph = newWindow.document.createElement("div");
-    paragraph.classList.add("col-auto")
+    let windowContainer = newWindow.document.getElementById("windowContainer");
+    if (!windowContainer) {
+      console.error("Window container not found.");
+      return;
+    }
+    
+    console.log("Productos en el carrito:", shoppingCartArray.products);
 
-    let productName = product.fruitInfo.name;
-      
-    productName = productName.endsWith("ón")
-      ? productName.replace("ón", "ones")
-      : productName + "s";
+    shoppingCartArray.products.forEach((product) => {
+      console.log("Producto actual:", product);
 
-    let message = "Las " + productName + " son frutas de " + product.fruitInfo.season.name;
+      let paragraph = newWindow.document.createElement("div");
+      paragraph.classList.add("col-auto");
 
-    if(product.fruitInfo.season.mask == "summer") {
+      let productName = product.fruitInfo.name.endsWith("ón")
+        ? product.fruitInfo.name.replace("ón", "ones")
+        : `${product.fruitInfo.name}s`;
 
-      let selection = (product.fruitInfo.local) ? ", de proximidad" : ", NO es de proximidad";
+      let message = `Las ${productName} son frutas de ${product.fruitInfo.season.name}`;
 
-      message = message + selection + " y están recogidas en " + product.fruitInfo.region + ".";
+      if (product.fruitInfo.season.mask === "summer") {
+        let selection = product.fruitInfo.local ? ", de proximidad" : ", NO es de proximidad";
+        message += `${selection} y están recogidas en ${product.fruitInfo.region}.`;
+      } else {
+        let selection = product.fruitInfo.refrigerate ? " y es recomendable conservarlas en la nevera." : " NO hace falta conservarlas en la nevera.";
+        message += selection;
+      }
 
-    } else {
-
-      let selection = (product.fruitInfo.refrigerate) ? " y es recomendable conservarlas en la nevera." : " NO hace falta conservarlas en la nevera.";
-      message = message + selection;
-
-    }   
-
-    paragraph.innerText = message
-
-    modalContainer.appendChild(paragraph);
-
+      paragraph.innerText = message;
+      windowContainer.appendChild(paragraph);
+    });
   });
-
 }
 
 function setDefaultStateOfApplication() {

@@ -19,10 +19,10 @@ async function startApplication() {
 
 async function getFruitsArrayFromAPI() {
   try {
-    let response = await fetch(host + "/fruits");
+    let response = await fetch(`${host}/fruits`);
     return await response.json();
   } catch (error) {
-    console.error("Error al obtener frutas:", error);
+    console.error(`Error al obtener frutas: ${error}`);
     return [];
   }
 }
@@ -36,8 +36,10 @@ function createFruitElements(fruitArray) {
     let card = createElementWithClassNames("div", "card");
 
     let img = createElementWithClassNames("img", ["card-img-top", "ratio", "ratio-1x1", "bg-secondary-subtle"]);
-    img.src = "./media/fruits/" + fruit.mask + ".jpg";
-    img.alt = fruit.mask;    
+    img.src = `./media/fruits/${fruit.mask}.jpg`;
+    img.alt = fruit.mask; 
+    
+    let svgContainer = createElementWithClassNames("div", ["position-absolute", "top-0", "end-0", "z-2", "m-1"]);
 
     let cardBody = createElementWithClassNames("div", "card-body");
 
@@ -47,24 +49,26 @@ function createFruitElements(fruitArray) {
     colFruitName.innerHTML = fruit.name;
 
     let colFruitPrice = createElementWithClassNames("div", ["col-12", "col-md-auto"]);
-    colFruitPrice.innerHTML = fruit.price + "&#8364";
+    colFruitPrice.innerHTML = `${fruit.price}&#8364`;
 
     let colFruitInputContainer = createElementWithClassNames("div", "col-12");
 
     let colFruitInput = createElementWithClassNames("input", "form-control");
     colFruitInput.type = "number";
-    colFruitInput.id = fruit.mask + "_input";
-    colFruitInput.name = fruit.mask + "_input";
+    colFruitInput.id =  `${fruit.mask}_input`;
+    colFruitInput.name = `${fruit.mask}_input`;
     colFruitInput.value = 0;
     colFruitInput.min = 0;
     colFruitInput.max = 100;
 
-    img.addEventListener("error", () => { img.src = "./media/default/image.jpg"; });
+    img.addEventListener("error", () => { setDefaultImageSrc(img); });
     img.addEventListener("click", () => { giveFunctionalityToClickOnFruitImage(fruit, colFruitInput) });
 
     fruitContainer.appendChild(column);
     column.appendChild(card);
-    card.appendChild(img);
+    card.appendChild(svgContainer);
+    giveIconsToSvgContainer(svgContainer, fruit);
+    card.appendChild(img);    
     card.appendChild(cardBody);
     cardBody.appendChild(rowFruitInfo);
     rowFruitInfo.appendChild(colFruitName);
@@ -80,7 +84,12 @@ function giveFunctionalityToShoppingCartButton() {
 
   shoppingCartButton.addEventListener("click", () => {
 
-    if(shoppingCartArray.products.length <= 0) { return; }
+    if(shoppingCartArray.products.length <= 0) { 
+      
+      alert(`El carrito esta vacío.`)
+      return;
+    
+    }
 
     sendShoppingCartToJsonServer();
 
@@ -96,7 +105,7 @@ function giveFunctionalityToClickOnFruitImage(fruit, input) {
 
   if(numberSelected <= 0) { 
     
-    alert("Introduce un número mayor que 0")
+    alert(`Introduce un número mayor que 0.`)
     return;
   
   }
@@ -134,14 +143,14 @@ function createProductPanelElement(fruit, numberSelected) {
   let row = createElementWithClassNames("div", ["row", "border-2", "border-bottom", "px-2", "align-items-center", "justify-content-center", fruit.mask, "bg-info-subtle"]);
   let imgContainer = createElementWithClassNames("div", ["col-auto"]);
   let img = createElementWithClassNames("img", ["ratio", "ratio-1x1", "py-2", "p-xxl-1", "rounded-circle", "imgCustom"]);
-  img.src = "./media/fruits/" + fruit.mask + ".jpg";
+  img.src = `./media/fruits/${fruit.mask}.jpg`;
   img.alt = fruit.mask;
   let nameContainer = createElementWithClassNames("div", ["col-auto", "text-truncate"]);
   nameContainer.innerHTML = fruit.name;
   let numberSelectedContainer = createElementWithClassNames("div", ["col-auto"]);
-  numberSelectedContainer.innerHTML = "x " + numberSelected;
+  numberSelectedContainer.innerHTML = `x ${numberSelected}`;
 
-  img.addEventListener("error", () => { img.src = "./media/default/image.jpg"; });
+  img.addEventListener("error", () => { setDefaultImageSrc(img); });
   
   productPanel.appendChild(row);
   row.appendChild(imgContainer);
@@ -155,40 +164,12 @@ function changeBackgroundColoursFromProductPanelElements(fruit) {
 
   let rows = document.querySelectorAll("#productPanelMessage .row");
 
-  if(rows.length > 1) {
-
-    rows.forEach((element) => {
-
-      if(element.classList.contains(fruit.mask)) {
-
-        if(!element.classList.contains("bg-info-subtle")) {
-
-          element.classList.add("bg-info-subtle")
-
-        }
-        if (element.classList.contains("bg-warning-subtle")) {
-
-          element.classList.remove("bg-warning-subtle")
-
-        }
-
-      } else {
-
-        if (!element.classList.contains("bg-warning-subtle")) {
-
-          element.classList.add("bg-warning-subtle")
-
-        }
-        if (element.classList.contains("bg-info-subtle")) {
-
-          element.classList.remove("bg-info-subtle")
-
-        }
-
-      }
-
+  if (rows.length > 1) {
+    rows.forEach(element => {
+      let hasFruitMask = element.classList.contains(fruit.mask);
+      element.classList.toggle("bg-info-subtle", hasFruitMask);
+      element.classList.toggle("bg-warning-subtle", !hasFruitMask);
     });
-
   }
   
 }
@@ -205,11 +186,11 @@ function sendShoppingCartToJsonServer() {
     }))
   };
   
-  let URL = host + "/orders";  
+  let URL = `${host}/orders`;  
   let init = {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(shoppingCartArrayToJSON),
-    headers: { 'Content-Type': 'application/json' }
+    headers: { "Content-Type": "application/json" }
   };
 
   fetch(URL, init)
@@ -241,8 +222,7 @@ function createShoppingCartMessage() {
 
   shoppingCartArray.products
   .slice()
-  .sort((a, b) =>
-    b.fruitInfo.name.toLocaleLowerCase().localeCompare(a.fruitInfo.name.toLocaleLowerCase()))
+  .sort((a, b) => b.fruitInfo.name.toLocaleLowerCase().localeCompare(a.fruitInfo.name.toLocaleLowerCase()))
   .forEach((product) => {
 
     shoppingCartTotalAmount = shoppingCartTotalAmount + (product.fruitInfo.price * product.totalKilos);
@@ -252,9 +232,7 @@ function createShoppingCartMessage() {
     let productKilos = product.totalKilos + " kilo"
     
     if (product.totalKilos > 1) {
-      productName = productName.endsWith("ón")
-        ? productName.replace("ón", "ones")
-        : productName + "s";
+      productName = productName.endsWith("ón") ? productName.replace("ón", "ones") : `${productName}s`;
       productKilos = productKilos + "s";
     }    
 
@@ -267,10 +245,10 @@ function createShoppingCartMessage() {
     productKilosCol.innerHTML = productKilos
 
     let productPriceKiloCol = createElementWithClassNames("div", ["col-auto"]);
-    productPriceKiloCol.innerHTML = (product.fruitInfo.price).toFixed(2) + "&#8364"
+    productPriceKiloCol.innerHTML = `${ (product.fruitInfo.price).toFixed(2) }&#8364`;
     
     let productTotalAmountCol = createElementWithClassNames("div", ["col-auto"]);
-    productTotalAmountCol.innerHTML = (product.fruitInfo.price * product.totalKilos).toFixed(2) + "&#8364"
+    productTotalAmountCol.innerHTML = `${ (product.fruitInfo.price * product.totalKilos).toFixed(2) }&#8364`;
 
     shoppingCartMessage.appendChild(productRow);
     productRow.appendChild(productNameCol);
@@ -282,11 +260,11 @@ function createShoppingCartMessage() {
 
   let totalAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let totalAmountCol = createElementWithClassNames("div", ["col-auto"]);
-  totalAmountCol.innerHTML = "Precio total: " + Math.floor(shoppingCartTotalAmount).toFixed(2) + " &#8364"
+  totalAmountCol.innerHTML = `Precio total: ${ Math.floor(shoppingCartTotalAmount).toFixed(2) } &#8364`;
 
   let averageAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let averageAmountCol = createElementWithClassNames("div", ["col-auto"]);
-  averageAmountCol.innerHTML = "Precio medio: " + (shoppingCartTotalAmount / shoppingCartTotalKilos).toFixed(3) + " &#8364/kg"
+  averageAmountCol.innerHTML = `Precio medio: ${ (shoppingCartTotalAmount / shoppingCartTotalKilos).toFixed(3) } &#8364/kg`;
 
   shoppingCartMessage.appendChild(totalAmountRow);
   totalAmountRow.appendChild(totalAmountCol)
@@ -304,15 +282,9 @@ function createShoppingCartFruitPeculiaritiesWindow() {
 
   let newWindow = window.open("./subpage/window/fruitInformationWindow.html", "fruitPeculiaritiesWindow", `width=${width},height=${height},top=${top},left=${left}`);
 
-  if (!newWindow) { return; }
-
   newWindow.onload = () => {
 
     let windowContainer = newWindow.document.getElementById("windowContainer");
-    if (!windowContainer) {
-      console.error("Window container not found.");
-      return;
-    }
 
     shoppingCartArray.products.forEach((product) => {
 
@@ -323,11 +295,11 @@ function createShoppingCartFruitPeculiaritiesWindow() {
         ? product.fruitInfo.name.replace("ón", "ones")
         : `${product.fruitInfo.name}s`;
 
-      let message = `Las ${productName} son frutas de ${product.fruitInfo.season.name}`;
+      let message = `${productName} son frutas de ${product.fruitInfo.season.name}`;
 
       if (product.fruitInfo.season.mask === "summer") {
-        let selection = product.fruitInfo.local ? ", de proximidad" : ", NO es de proximidad";
-        message += `${selection} y están recogidas en ${product.fruitInfo.region}.`;
+        let selection = product.fruitInfo.local ? "de proximidad" : "NO es de proximidad";
+        message += `, ${selection} y están recogidas en ${product.fruitInfo.region}.`;
       } else {
         let selection = product.fruitInfo.refrigerate ? " y es recomendable conservarlas en la nevera." : " NO hace falta conservarlas en la nevera.";
         message += selection;
@@ -367,7 +339,7 @@ function setDefaultStateOfApplication(window) {
 
 function getDate() {
   let date = new Date();
-  return (date.getMonth() + 1) + "/" + date.getFullYear();
+  return `${(date.getMonth() + 1)}/${date.getFullYear()}`;
 }
 
 function getFullDate() {
@@ -379,7 +351,13 @@ function getFullDate() {
     let hours = String(date.getHours()).padStart(2, '0');
     let minutes = String(date.getMinutes()).padStart(2, '0');
 
-    return day + "/" + month + "/" + year + " " + hours + ":" + minutes;
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+function setDefaultImageSrc(img) {
+
+  img.src = `./media/default/image.jpg`;
+
 }
 
 function createElementWithClassNames(element, classNames) {
@@ -421,6 +399,126 @@ function deleteEmptyMessageElement(id) {
     let emptyMessage = document.getElementById(id);
     emptyMessage.replaceChildren();
     document.getElementById(id).classList.replace("align-self-center", "align-self-start");
+
+  }
+
+}
+
+function createSVG(svgAttributes, paths) {
+  let svgNS = "http://www.w3.org/2000/svg";
+
+  let svgElement = document.createElementNS(svgNS, "svg");
+
+  for (let [key, value] of Object.entries(svgAttributes)) {
+      svgElement.setAttribute(key, value);
+  }
+
+  paths.forEach(pathData => {
+    let pathElement = document.createElementNS(svgNS, "path");
+      pathElement.setAttribute("d", pathData);
+      svgElement.appendChild(pathElement);
+  });
+
+  return svgElement;
+}
+
+function giveIconsToSvgContainer(svgContainer, fruit) {
+
+  let seasonSvg = "";
+
+  if(fruit.season.mask === "summer") {
+
+    seasonSvg = createSVG({
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "32",
+      height: "32",
+      fill: "currentColor",
+      class: "bi bi-thermometer-sun rounded p-1 bg-danger-subtle bg-gradient text-warning",
+      viewBox: "0 0 16 16"
+    }, [
+        "M5 12.5a1.5 1.5 0 1 1-2-1.415V2.5a.5.5 0 0 1 1 0v8.585A1.5 1.5 0 0 1 5 12.5",
+        "M1 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM3.5 1A1.5 1.5 0 0 0 2 2.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0L5 10.486V2.5A1.5 1.5 0 0 0 3.5 1m5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5m4.243 1.757a.5.5 0 0 1 0 .707l-.707.708a.5.5 0 1 1-.708-.708l.708-.707a.5.5 0 0 1 .707 0M8 5.5a.5.5 0 0 1 .5-.5 3 3 0 1 1 0 6 .5.5 0 0 1 0-1 2 2 0 0 0 0-4 .5.5 0 0 1-.5-.5M12.5 8a.5.5 0 0 1 .5-.5h1a.5.5 0 1 1 0 1h-1a.5.5 0 0 1-.5-.5m-1.172 2.828a.5.5 0 0 1 .708 0l.707.708a.5.5 0 0 1-.707.707l-.708-.707a.5.5 0 0 1 0-.708M8.5 12a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5"
+    ]);
+
+    let localSvg = "";
+
+    if(fruit.local) {
+
+      localSvg = createSVG({
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "32",
+        height: "32",
+        fill: "currentColor",
+        class: "bi bi-globe-europe-africa rounded p-1 mx-1 bg-success bg-gradient",
+        viewBox: "0 0 16 16"
+      }, [
+        "M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M3.668 2.501l-.288.646a.847.847 0 0 0 1.479.815l.245-.368a.81.81 0 0 1 1.034-.275.81.81 0 0 0 .724 0l.261-.13a1 1 0 0 1 .775-.05l.984.34q.118.04.243.054c.784.093.855.377.694.801-.155.41-.616.617-1.035.487l-.01-.003C8.274 4.663 7.748 4.5 6 4.5 4.8 4.5 3.5 5.62 3.5 7c0 1.96.826 2.166 1.696 2.382.46.115.935.233 1.304.618.449.467.393 1.181.339 1.877C6.755 12.96 6.674 14 8.5 14c1.75 0 3-3.5 3-4.5 0-.262.208-.468.444-.7.396-.392.87-.86.556-1.8-.097-.291-.396-.568-.641-.756-.174-.133-.207-.396-.052-.551a.33.33 0 0 1 .42-.042l1.085.724c.11.072.255.058.348-.035.15-.15.415-.083.489.117.16.43.445 1.05.849 1.357L15 8A7 7 0 1 1 3.668 2.501"
+      ]);
+
+    } else {
+
+      localSvg = createSVG({
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "32",
+        height: "32",
+        fill: "currentColor",
+        class: "bi bi-airplane-engines-fill rounded p-1 mx-1 bg-secondary bg-gradient",
+        viewBox: "0 0 16 16"
+      }, [
+          "M8 0c-.787 0-1.292.592-1.572 1.151A4.35 4.35 0 0 0 6 3v3.691l-2 1V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.191l-1.17.585A1.5 1.5 0 0 0 0 10.618V12a.5.5 0 0 0 .582.493l1.631-.272.313.937a.5.5 0 0 0 .948 0l.405-1.214 2.21-.369.375 2.253-1.318 1.318A.5.5 0 0 0 5.5 16h5a.5.5 0 0 0 .354-.854l-1.318-1.318.375-2.253 2.21.369.405 1.214a.5.5 0 0 0 .948 0l.313-.937 1.63.272A.5.5 0 0 0 16 12v-1.382a1.5 1.5 0 0 0-.83-1.342L14 8.691V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.191l-2-1V3c0-.568-.14-1.271-.428-1.849C9.292.591 8.787 0 8 0"
+      ]);    
+
+    }
+
+    svgContainer.appendChild(seasonSvg);
+    svgContainer.appendChild(localSvg);
+
+  } else {
+
+    seasonSvg = createSVG({
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "32",
+      height: "32",
+      fill: "currentColor",
+      class: "bi bi-thermometer-snow rounded p-1 bg-primary-subtle bg-gradient text-info",
+      viewBox: "0 0 16 16"
+    }, [
+      "M5 12.5a1.5 1.5 0 1 1-2-1.415V9.5a.5.5 0 0 1 1 0v1.585A1.5 1.5 0 0 1 5 12.5",
+      "M1 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM3.5 1A1.5 1.5 0 0 0 2 2.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0L5 10.486V2.5A1.5 1.5 0 0 0 3.5 1m5 1a.5.5 0 0 1 .5.5v1.293l.646-.647a.5.5 0 0 1 .708.708L9 5.207v1.927l1.669-.963.495-1.85a.5.5 0 1 1 .966.26l-.237.882 1.12-.646a.5.5 0 0 1 .5.866l-1.12.646.884.237a.5.5 0 1 1-.26.966l-1.848-.495L9.5 8l1.669.963 1.849-.495a.5.5 0 1 1 .258.966l-.883.237 1.12.646a.5.5 0 0 1-.5.866l-1.12-.646.237.883a.5.5 0 1 1-.966.258L10.67 9.83 9 8.866v1.927l1.354 1.353a.5.5 0 0 1-.708.708L9 12.207V13.5a.5.5 0 0 1-1 0v-11a.5.5 0 0 1 .5-.5"
+    ]);
+
+    let refrigerateSvg = "";
+
+    if(fruit.refrigerate) {
+
+      refrigerateSvg = createSVG({
+          xmlns: "http://www.w3.org/2000/svg",
+          width: "32",
+          height: "32",
+          fill: "currentColor",
+          class: "bi bi-snow2 rounded p-1 ms-1 bg-primary bg-gradient",
+          viewBox: "0 0 16 16"
+      }, [
+          "M8 16a.5.5 0 0 1-.5-.5v-1.293l-.646.647a.5.5 0 0 1-.707-.708L7.5 12.793v-1.086l-.646.647a.5.5 0 0 1-.707-.708L7.5 10.293V8.866l-1.236.713-.495 1.85a.5.5 0 1 1-.966-.26l.237-.882-.94.542-.496 1.85a.5.5 0 1 1-.966-.26l.237-.882-1.12.646a.5.5 0 0 1-.5-.866l1.12-.646-.884-.237a.5.5 0 1 1 .26-.966l1.848.495.94-.542-.882-.237a.5.5 0 1 1 .258-.966l1.85.495L7 8l-1.236-.713-1.849.495a.5.5 0 1 1-.258-.966l.883-.237-.94-.542-1.85.495a.5.5 0 0 1-.258-.966l.883-.237-1.12-.646a.5.5 0 1 1 .5-.866l1.12.646-.237-.883a.5.5 0 0 1 .966-.258l.495 1.849.94.542-.236-.883a.5.5 0 0 1 .966-.258l.495 1.849 1.236.713V5.707L6.147 4.354a.5.5 0 1 1 .707-.708l.646.647V3.207L6.147 1.854a.5.5 0 1 1 .707-.708l.646.647V.5a.5.5 0 0 1 1 0v1.293l.647-.647a.5.5 0 1 1 .707.708L8.5 3.207v1.086l.647-.647a.5.5 0 1 1 .707.708L8.5 5.707v1.427l1.236-.713.495-1.85a.5.5 0 1 1 .966.26l-.236.882.94-.542.495-1.85a.5.5 0 1 1 .966.26l-.236.882 1.12-.646a.5.5 0 0 1 .5.866l-1.12.646.883.237a.5.5 0 1 1-.26.966l-1.848-.495-.94.542.883.237a.5.5 0 1 1-.26.966l-1.848-.495L9 8l1.236.713 1.849-.495a.5.5 0 0 1 .259.966l-.883.237.94.542 1.849-.495a.5.5 0 0 1 .259.966l-.883.237 1.12.646a.5.5 0 0 1-.5.866l-1.12-.646.236.883a.5.5 0 1 1-.966.258l-.495-1.849-.94-.542.236.883a.5.5 0 0 1-.966.258L9.736 9.58 8.5 8.866v1.427l1.354 1.353a.5.5 0 0 1-.707.708l-.647-.647v1.086l1.354 1.353a.5.5 0 0 1-.707.708l-.647-.647V15.5a.5.5 0 0 1-.5.5"
+      ]);
+
+    } else {
+
+      refrigerateSvg = createSVG({
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "32",
+        height: "32",
+        fill: "currentColor",
+        class: "bi bi-fire rounded p-1 ms-1 bg-danger bg-gradient",
+        viewBox: "0 0 16 16"
+      }, [
+        "M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"
+      ]);
+
+    }
+
+    svgContainer.appendChild(seasonSvg);
+    svgContainer.appendChild(refrigerateSvg);
 
   }
 

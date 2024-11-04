@@ -19,7 +19,7 @@ async function startApplication() {
 
 async function getFruitsArrayFromAPI() {
   try {
-    const response = await fetch(host + "/fruits");
+    let response = await fetch(host + "/fruits");
     return await response.json();
   } catch (error) {
     console.error("Error al obtener frutas:", error);
@@ -214,11 +214,10 @@ function sendShoppingCartToJsonServer() {
 
   fetch(URL, init)
   .then(response => response.json())
-  .then(responseData =>  {
-    console.log(responseData);
+  .then(() =>  {
     createShoppingCartMessage();
-    createShoppingCartFruitPeculiaritiesWindow()
-    setDefaultStateOfApplication()      
+    let window = createShoppingCartFruitPeculiaritiesWindow();
+    setDefaultStateOfApplication(window);
   })
   .catch(error => console.error(error));
   
@@ -259,13 +258,17 @@ function createShoppingCartMessage() {
       productKilos = productKilos + "s";
     }    
 
-    let productRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);    
+    let productRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);  
+
     let productNameCol = createElementWithClassNames("div", ["col-auto", "text-truncate"]);
     productNameCol.innerHTML = productName
+
     let productKilosCol = createElementWithClassNames("div", ["col-auto"]);
-    productKilosCol.innerHTML = productKilos 
+    productKilosCol.innerHTML = productKilos
+
     let productPriceKiloCol = createElementWithClassNames("div", ["col-auto"]);
     productPriceKiloCol.innerHTML = (product.fruitInfo.price).toFixed(2) + "&#8364"
+    
     let productTotalAmountCol = createElementWithClassNames("div", ["col-auto"]);
     productTotalAmountCol.innerHTML = (product.fruitInfo.price * product.totalKilos).toFixed(2) + "&#8364"
 
@@ -280,6 +283,7 @@ function createShoppingCartMessage() {
   let totalAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let totalAmountCol = createElementWithClassNames("div", ["col-auto"]);
   totalAmountCol.innerHTML = "Precio total: " + Math.floor(shoppingCartTotalAmount).toFixed(2) + " &#8364"
+
   let averageAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let averageAmountCol = createElementWithClassNames("div", ["col-auto"]);
   averageAmountCol.innerHTML = "Precio medio: " + (shoppingCartTotalAmount / shoppingCartTotalKilos).toFixed(3) + " &#8364/kg"
@@ -300,23 +304,17 @@ function createShoppingCartFruitPeculiaritiesWindow() {
 
   let newWindow = window.open("./subpage/window/fruitInformationWindow.html", "fruitPeculiaritiesWindow", `width=${width},height=${height},top=${top},left=${left}`);
 
-  if (!newWindow) {
-    console.error("Failed to open new window.");
-    return;
-  }
+  if (!newWindow) { return; }
 
-  newWindow.addEventListener("load", () => {
+  newWindow.onload = () => {
 
     let windowContainer = newWindow.document.getElementById("windowContainer");
     if (!windowContainer) {
       console.error("Window container not found.");
       return;
     }
-    
-    console.log("Productos en el carrito:", shoppingCartArray.products);
 
     shoppingCartArray.products.forEach((product) => {
-      console.log("Producto actual:", product);
 
       let paragraph = newWindow.document.createElement("div");
       paragraph.classList.add("col-auto");
@@ -338,12 +336,20 @@ function createShoppingCartFruitPeculiaritiesWindow() {
       paragraph.innerText = message;
       windowContainer.appendChild(paragraph);
     });
-  });
+
+  };
+
+  return newWindow;
+
 }
 
-function setDefaultStateOfApplication() {
+function setDefaultStateOfApplication(window) {
 
   setTimeout(() => {
+
+    if (typeof window !== 'undefined' && window && !window.closed) {
+      window.close();
+    }
     
     createEmptyMessageElement("productPanelMessage");
     createEmptyMessageElement("shoppingCartMessage");

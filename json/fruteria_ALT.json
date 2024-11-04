@@ -8,7 +8,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": true
+      "refrigerate": true,
+      "id": "0c00"
     },
     {
       "mask": "banana",
@@ -19,7 +20,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Islas Canarias"
+      "region": "Islas Canarias",
+      "id": "b64b"
     },
     {
       "mask": "blackberry",
@@ -30,7 +32,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Castilla-La Mancha"
+      "region": "Castilla-La Mancha",
+      "id": "673d"
     },
     {
       "mask": "blueberry",
@@ -41,7 +44,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Canadá"
+      "region": "Canadá",
+      "id": "c9b8"
     },
     {
       "mask": "cherry",
@@ -52,7 +56,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Extremadura"
+      "region": "Extremadura",
+      "id": "1a89"
     },
     {
       "mask": "grape",
@@ -63,7 +68,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Castilla y León"
+      "region": "Castilla y León",
+      "id": "aaa5"
     },
     {
       "mask": "kiwi",
@@ -74,7 +80,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Nueva Zelanda"
+      "region": "Nueva Zelanda",
+      "id": "dc33"
     },
     {
       "mask": "lemon",
@@ -84,7 +91,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": false
+      "refrigerate": false,
+      "id": "ccd2"
     },
     {
       "mask": "lime",
@@ -95,7 +103,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Colombia"
+      "region": "Colombia",
+      "id": "c943"
     },
     {
       "mask": "mango",
@@ -106,7 +115,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Brasil"
+      "region": "Brasil",
+      "id": "ec80"
     },
     {
       "mask": "melon",
@@ -117,7 +127,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Murcia"
+      "region": "Murcia",
+      "id": "91da"
     },
     {
       "mask": "orange",
@@ -127,7 +138,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": false
+      "refrigerate": false,
+      "id": "79e5"
     },
     {
       "mask": "papaya",
@@ -138,7 +150,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Ecuador"
+      "region": "Ecuador",
+      "id": "7940"
     },
     {
       "mask": "peach",
@@ -149,7 +162,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Comunidad Valenciana"
+      "region": "Comunidad Valenciana",
+      "id": "f4f1"
     },
     {
       "mask": "pear",
@@ -159,7 +173,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": true
+      "refrigerate": true,
+      "id": "1b67"
     },
     {
       "mask": "pineapple",
@@ -169,7 +184,8 @@
         "mask": "winter",
         "name": "Invierno"
       },
-      "refrigerate": false
+      "refrigerate": false,
+      "id": "31cc"
     },
     {
       "mask": "raspberry",
@@ -180,7 +196,8 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Estados Unidos"
+      "region": "Estados Unidos",
+      "id": "cd04"
     },
     {
       "mask": "strawberry",
@@ -191,7 +208,8 @@
         "name": "Verano"
       },
       "local": true,
-      "region": "Andalucía"
+      "region": "Andalucía",
+      "id": "3c1c"
     },
     {
       "mask": "watermelon",
@@ -202,25 +220,11 @@
         "name": "Verano"
       },
       "local": false,
-      "region": "Marruecos"
+      "region": "Marruecos",
+      "id": "ee92"
     }
   ],
   "orders": [
-    {
-      "id": 1,
-      "date": "05/2023",
-      "products": [
-        {
-          "fruitID": 7,
-          "totalAmount": 45.78,
-          "totalKilos": 5
-        },
-        {
-          "fruitID": 1,
-          "totalAmount": 37.23,
-          "totalKilos": 3
-        }
-      ]
-    }
+    
   ]
 }

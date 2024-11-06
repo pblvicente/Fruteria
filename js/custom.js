@@ -1,6 +1,6 @@
 const host = "http://localhost:3000";
-let fruitArray = [];
-let shoppingCartArray = {
+var fruitArray = [];
+var shoppingCartArray = {
   date: "",
   products: []
 };
@@ -13,7 +13,7 @@ async function startApplication() {
   fruitArray.sort((a, b) =>
     a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
   );
-  createFruitElements(fruitArray);
+  createFruitElements();
   giveFunctionalityToShoppingCartButton();
 }
 
@@ -27,7 +27,7 @@ async function getFruitsArrayFromAPI() {
   }
 }
 
-function createFruitElements(fruitArray) {
+function createFruitElements() {
   let fruitContainer = document.getElementById("fruitContainer");
 
   fruitArray.forEach((fruit) => {
@@ -260,7 +260,7 @@ function createShoppingCartMessage() {
 
   let totalAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let totalAmountCol = createElementWithClassNames("div", ["col-auto"]);
-  totalAmountCol.innerHTML = `Precio total: ${ Math.floor(shoppingCartTotalAmount).toFixed(2) } &#8364`;
+  totalAmountCol.innerHTML = `Precio total: ${ Math.floor(shoppingCartTotalAmount * 100) / 100 } &#8364`;
 
   let averageAmountRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);   
   let averageAmountCol = createElementWithClassNames("div", ["col-auto"]);
@@ -298,10 +298,10 @@ function createShoppingCartFruitPeculiaritiesWindow() {
       let message = `${productName} son frutas de ${product.fruitInfo.season.name}`;
 
       if (product.fruitInfo.season.mask === "summer") {
-        let selection = product.fruitInfo.local ? "de proximidad" : "NO es de proximidad";
-        message += `, ${selection} y están recogidas en ${product.fruitInfo.region}.`;
+        let selection = product.fruitInfo.local ? "son de proximidad" : "NO son de proximidad";
+        message += `, ${selection} y se recogen en ${product.fruitInfo.region}.`;
       } else {
-        let selection = product.fruitInfo.refrigerate ? " y es recomendable conservarlas en la nevera." : " NO hace falta conservarlas en la nevera.";
+        let selection = product.fruitInfo.refrigerate ? " y es recomendable que su conserva sea en nevera." : " NO es necesaria su conserva en nevera.";
         message += selection;
       }
 

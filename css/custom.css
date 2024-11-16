@@ -11905,14 +11905,14 @@ textarea.form-control-lg {
     height: 5vh;
   }
   #fruitContainer {
-    height: 65vh;
+    height: 50vh;
     overflow-y: scroll;
   }
   #shoppingCartTitle {
     height: 5vh;
   }
   #shoppingCartMessageContainer {
-    height: 20vh;
+    height: 35vh;
     overflow-y: scroll;
   }
   #shoppingCartButtonContainer {
@@ -11922,7 +11922,7 @@ textarea.form-control-lg {
     height: 5vh;
   }
   #productPanelMessageContainer {
-    height: 90vh;
+    height: 45vh;
     overflow-y: scroll;
   }
 }

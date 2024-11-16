@@ -33,17 +33,19 @@ function createFruitElements() {
   fruitArray.forEach((fruit) => {
     let column = createElementWithClassNames("div", "col");
 
-    let card = createElementWithClassNames("div", "card");
+    let primaryContainer = createElementWithClassNames("div", ["bg-dark", "p-2", "rounded"]);
 
-    let img = createElementWithClassNames("img", ["card-img-top", "ratio", "ratio-1x1", "bg-secondary-subtle"]);
-    img.src = `./media/fruits/${fruit.mask}.jpg`;
-    img.alt = fruit.mask; 
+    let secondaryContainer = createElementWithClassNames("div", ["position-relative", "overflow-hidden", "rounded", "border", "border-2"]);
+
+    let image = createElementWithClassNames("img", ["bg-secondary-subtle", "ratio", "ratio-1x1"]);
+    image.src = `./media/fruits/${fruit.mask}.jpg`;
+    image.alt = fruit.mask; 
     
-    let svgContainer = createElementWithClassNames("div", ["position-absolute", "top-0", "end-0", "z-2", "m-1"]);
+    let svgContainer = createElementWithClassNames("div", ["position-absolute", "top-0", "end-0", "m-1", "p-1", "bg-dark", "bg-opacity-25", "rounded"]);
 
-    let cardBody = createElementWithClassNames("div", "card-body");
+    let infoContainer = createElementWithClassNames("div", ["position-absolute", "bottom-0", "start-50", "translate-middle-x", "w-100", "bg-dark", "bg-opacity-75"]);
 
-    let rowFruitInfo = createElementWithClassNames("div", ["row", "gy-1", "justify-content-between", "card-text"]);
+    let infoRow = createElementWithClassNames("div", ["row", "justify-content-between", "card-text", "px-1"]);
 
     let colFruitName = createElementWithClassNames("div", ["col", "text-truncate"]);
     colFruitName.innerHTML = fruit.name;
@@ -51,30 +53,28 @@ function createFruitElements() {
     let colFruitPrice = createElementWithClassNames("div", ["col-12", "col-md-auto"]);
     colFruitPrice.innerHTML = `${fruit.price}&#8364`;
 
-    let colFruitInputContainer = createElementWithClassNames("div", "col-12");
+    let input = createElementWithClassNames("input", ["form-control", "mt-2"]);
+    input.type = "number";
+    input.id =  `${fruit.mask}_input`;
+    input.name = `${fruit.mask}_input`;
+    input.value = 0;
+    input.min = 0;
+    input.max = 100;
 
-    let colFruitInput = createElementWithClassNames("input", "form-control");
-    colFruitInput.type = "number";
-    colFruitInput.id =  `${fruit.mask}_input`;
-    colFruitInput.name = `${fruit.mask}_input`;
-    colFruitInput.value = 0;
-    colFruitInput.min = 0;
-    colFruitInput.max = 100;
-
-    img.addEventListener("error", () => { setDefaultImageSrc(img); });
-    img.addEventListener("click", () => { giveFunctionalityToClickOnFruitImage(fruit, colFruitInput) });
+    image.addEventListener("error", () => { setDefaultImageSrc(image); });
+    image.addEventListener("click", () => { giveFunctionalityToClickOnFruitImage(fruit, input) });
 
     fruitContainer.appendChild(column);
-    column.appendChild(card);
-    card.appendChild(svgContainer);
-    giveIconsToSvgContainer(svgContainer, fruit);
-    card.appendChild(img);    
-    card.appendChild(cardBody);
-    cardBody.appendChild(rowFruitInfo);
-    rowFruitInfo.appendChild(colFruitName);
-    rowFruitInfo.appendChild(colFruitPrice);
-    rowFruitInfo.appendChild(colFruitInputContainer);
-    colFruitInputContainer.appendChild(colFruitInput);
+      column.appendChild(primaryContainer);
+        primaryContainer.appendChild(secondaryContainer);  
+          secondaryContainer.appendChild(image);     
+          secondaryContainer.appendChild(svgContainer);
+            giveIconsToSvgContainer(svgContainer, fruit);
+          secondaryContainer.appendChild(infoContainer);
+            infoContainer.appendChild(infoRow);
+              infoRow.appendChild(colFruitName);
+              infoRow.appendChild(colFruitPrice);
+        primaryContainer.appendChild(input);
   });
 }
 
@@ -449,7 +449,7 @@ function giveIconsToSvgContainer(svgContainer, fruit) {
         width: "32",
         height: "32",
         fill: "currentColor",
-        class: "bi bi-globe-europe-africa rounded p-1 mx-1 bg-success bg-gradient",
+        class: "bi bi-globe-europe-africa rounded p-1 ms-1 bg-success bg-gradient",
         viewBox: "0 0 16 16"
       }, [
         "M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M3.668 2.501l-.288.646a.847.847 0 0 0 1.479.815l.245-.368a.81.81 0 0 1 1.034-.275.81.81 0 0 0 .724 0l.261-.13a1 1 0 0 1 .775-.05l.984.34q.118.04.243.054c.784.093.855.377.694.801-.155.41-.616.617-1.035.487l-.01-.003C8.274 4.663 7.748 4.5 6 4.5 4.8 4.5 3.5 5.62 3.5 7c0 1.96.826 2.166 1.696 2.382.46.115.935.233 1.304.618.449.467.393 1.181.339 1.877C6.755 12.96 6.674 14 8.5 14c1.75 0 3-3.5 3-4.5 0-.262.208-.468.444-.7.396-.392.87-.86.556-1.8-.097-.291-.396-.568-.641-.756-.174-.133-.207-.396-.052-.551a.33.33 0 0 1 .42-.042l1.085.724c.11.072.255.058.348-.035.15-.15.415-.083.489.117.16.43.445 1.05.849 1.357L15 8A7 7 0 1 1 3.668 2.501"
@@ -462,7 +462,7 @@ function giveIconsToSvgContainer(svgContainer, fruit) {
         width: "32",
         height: "32",
         fill: "currentColor",
-        class: "bi bi-airplane-engines-fill rounded p-1 mx-1 bg-secondary bg-gradient",
+        class: "bi bi-airplane-engines-fill rounded p-1 ms-1 bg-secondary bg-gradient",
         viewBox: "0 0 16 16"
       }, [
           "M8 0c-.787 0-1.292.592-1.572 1.151A4.35 4.35 0 0 0 6 3v3.691l-2 1V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.191l-1.17.585A1.5 1.5 0 0 0 0 10.618V12a.5.5 0 0 0 .582.493l1.631-.272.313.937a.5.5 0 0 0 .948 0l.405-1.214 2.21-.369.375 2.253-1.318 1.318A.5.5 0 0 0 5.5 16h5a.5.5 0 0 0 .354-.854l-1.318-1.318.375-2.253 2.21.369.405 1.214a.5.5 0 0 0 .948 0l.313-.937 1.63.272A.5.5 0 0 0 16 12v-1.382a1.5 1.5 0 0 0-.83-1.342L14 8.691V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.191l-2-1V3c0-.568-.14-1.271-.428-1.849C9.292.591 8.787 0 8 0"

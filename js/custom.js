@@ -158,6 +158,8 @@ function createProductPanelElement(fruit, numberSelected) {
   row.appendChild(nameContainer)
   row.appendChild(numberSelectedContainer);
 
+  row.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
 }
 
 function changeBackgroundColoursFromProductPanelElements(fruit) {

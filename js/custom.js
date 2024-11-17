@@ -14,7 +14,6 @@ async function startApplication() {
     a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
   );
   createFruitElements();
-  giveFunctionalityToShoppingCartButton();
 }
 
 async function getFruitsArrayFromAPI() {
@@ -76,25 +75,6 @@ function createFruitElements() {
               infoRow.appendChild(colFruitPrice);
         primaryContainer.appendChild(input);
   });
-}
-
-function giveFunctionalityToShoppingCartButton() {
-
-  let shoppingCartButton = document.getElementById("shoppingCartButton");
-
-  shoppingCartButton.addEventListener("click", () => {
-
-    if(shoppingCartArray.products.length <= 0) { 
-      
-      alert(`El carrito esta vacío.`)
-      return;
-    
-    }
-
-    sendShoppingCartToJsonServer();
-
-  });
-  
 }
 
 // FUNCTIONALITIES
@@ -276,8 +256,8 @@ function createShoppingCartMessage() {
 }
 
 function createShoppingCartFruitPeculiaritiesWindow() {
-  let width = 720;
-  let height = 480;
+  let width = 500;
+  let height = 300;
 
   let left = (window.innerWidth / 2) - (width / 2);
   let top = (window.innerHeight / 2) - (height / 2);

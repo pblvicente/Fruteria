@@ -43,28 +43,79 @@
         </div>
 
         <div class="col-12">
-          <div id="shoppingCartTitle" class="row pt-1 align-items-center border-bottom border-top border-2">
-            <h5 class="text-center">Carrito</h5>
+          <div id="formTitle" class="row pt-1 align-items-center border-bottom border-top border-2">
+            <h5 class="text-center">Formulario</h5>
           </div>
 
-          <div
-            id="shoppingCartMessageContainer"
-            class="row py-3"
-          >
-            <div id="shoppingCartMessage" class="col-12 align-self-center">
-              <h6 class="text-center">Vacío</h6>
+          <form
+            id="formContainer"
+            class="row row-gap-3 py-3"
+          >            
+            <div class="col-12 col-xxl-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="nameInput" name="nameInput" required>
+                <label for="nameInput">Nombre</label>
+              </div>
             </div>
-          </div>
+            <div class="col-12 col-xxl-8">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="lastNameInput" name="lastNameInput" required>
+                <label for="lastNameInput">Apellidos</label>
+              </div>
+            </div>
+            <div class="col-12 col-xxl-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="addressInput" name="addressInput" required>
+                <label for="addressInput">Dirección</label>
+              </div>
+            </div>
+            <div class="col-12 col-xxl-6">
+              <div class="form-floating">
+                <input type="email" class="form-control" id="emailInput" name="emailInput" required>
+                <label for="emailInput">Correo Electrónico</label>
+              </div>
+            </div>
+            <div class="col-12 col-xxl-3">
+              <div class="p-2 bg-dark rounded border border-1">
+                <label class="d-block mb-2" for="typeOfPaymentInput">Tipo de pago:</label>
 
-          <div id="shoppingCartButtonContainer" class="row">
-            <button
-              id="shoppingCartButton"
-              class="btn btn-sm btn-custom"
-              type="button"
-            >
-              Mostrar
-            </button>
-          </div>
+                <input type="radio" class="btn-check" name="typeOfPaymentInput" id="cardPaymentInput" value="cardPayment" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="cardPaymentInput">Con tarjeta</label>
+
+                <input type="radio" class="btn-check" name="typeOfPaymentInput" id="onArrivalPaymentInput" value="onArrivalPayment" autocomplete="off" required>
+                <label class="btn btn-outline-info" for="onArrivalPaymentInput">En la entrega</label>
+              </div>
+            </div>
+            <div class="col-12 col-xxl-2">
+              <div class="p-2 bg-dark rounded border border-1">
+                <label class="d-block mb-2" for="hasClientCardInput">¿Tienes tarjeta de cliente?</label>
+
+                <input type="radio" class="btn-check" name="hasClientCardInput" id="yesCardInput" value="yes" autocomplete="off" required>
+                <label class="btn btn-outline-success" for="yesCardInput">Sí</label>
+
+                <input type="radio" class="btn-check" name="hasClientCardInput" id="noCardInput" value="no" autocomplete="off" required>
+                <label class="btn btn-outline-danger" for="noCardInput">No</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="btn-group w-100 border border-2">
+                <button
+                  id="sendFormButton"
+                  class="btn btn-sm btn-success"
+                  type="submit"
+                >
+                Realizar Pedido
+                </button>
+                <button
+                  id="resetFormButton"
+                  class="btn btn-sm btn-danger"
+                  type="reset"
+                >
+                  Limpiar Formulario
+                </button>
+              </div>             
+            </div>            
+          </form>
         </div>
 
       </div>

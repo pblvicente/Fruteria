@@ -14,6 +14,7 @@ async function startApplication() {
     a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
   );
   createFruitElements();
+  giveFunctionalityToForm();
 }
 
 async function getFruitsArrayFromAPI() {
@@ -54,7 +55,7 @@ function createFruitElements() {
 
     let input = createElementWithClassNames("input", ["form-control", "mt-2"]);
     input.type = "number";
-    input.id =  `${fruit.mask}_input`;
+    input.id = `${fruit.mask}_input`;
     input.name = `${fruit.mask}_input`;
     input.value = 0;
     input.min = 0;
@@ -75,6 +76,21 @@ function createFruitElements() {
               infoRow.appendChild(colFruitPrice);
         primaryContainer.appendChild(input);
   });
+}
+
+function giveFunctionalityToForm() {
+
+  let form = document.getElementById("formContainer");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    validateInputs();
+
+  });
+
+  giveFunctionalityToHasClientCardInput(form);
+
 }
 
 // FUNCTIONALITIES
@@ -133,10 +149,10 @@ function createProductPanelElement(fruit, numberSelected) {
   img.addEventListener("error", () => { setDefaultImageSrc(img); });
   
   productPanel.appendChild(row);
-  row.appendChild(imgContainer);
-  imgContainer.appendChild(img);
-  row.appendChild(nameContainer)
-  row.appendChild(numberSelectedContainer);
+    row.appendChild(imgContainer);
+      imgContainer.appendChild(img);
+    row.appendChild(nameContainer);
+    row.appendChild(numberSelectedContainer);
 
   row.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
@@ -154,6 +170,58 @@ function changeBackgroundColoursFromProductPanelElements(fruit) {
     });
   }
   
+}
+
+
+function giveFunctionalityToHasClientCardInput(form) {
+
+  let hasClientCardInputs = document.querySelectorAll(`[name="hasClientCardInput"]`);
+
+  hasClientCardInputs.forEach(input => {
+    input.addEventListener("input", () => {
+      if (input.value === "yes" && input.checked) {
+        createClientCodeInput(form);
+      } else if (input.value === "no" && input.checked) {
+        removeClientCodeInput();
+      }
+    });
+  });
+
+}
+
+function createClientCodeInput(form) {
+
+  let col = createElementWithClassNames("div", ["col-12", "col-xxl-5"]);
+  col.id = `clientCodeInputContainer`
+
+  let inputContainer = createElementWithClassNames("div", "form-floating");
+  
+  let input = createElementWithClassNames("input", ["col-12", "form-control"]);
+  input.type = "text";
+  input.id = `clientCodeInput`;
+  input.name = `clientCodeInput`;
+  input.required = true;
+
+  let label = document.createElement("label");
+  label.innerText = "Código de cliente";
+
+  form.insertBefore(col, form.lastElementChild);
+    col.appendChild(inputContainer);
+      inputContainer.appendChild(input);
+      inputContainer.appendChild(label);
+
+  col.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+}
+
+function removeClientCodeInput() {
+
+  let clientCodeInputContainer = document.getElementById("clientCodeInputContainer");
+
+  if(clientCodeInputContainer) {
+    clientCodeInputContainer.remove();
+  }
+
 }
 
 function sendShoppingCartToJsonServer() {

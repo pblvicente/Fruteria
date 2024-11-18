@@ -89,6 +89,12 @@ function giveFunctionalityToForm() {
 
   });
 
+  form.addEventListener("reset", () => {
+
+    removeClientCodeInputContainer();
+
+  });
+
   giveFunctionalityToHasClientCardInput(form);
 
 }
@@ -172,6 +178,58 @@ function changeBackgroundColoursFromProductPanelElements(fruit) {
   
 }
 
+function validateInputs() {
+
+  let isValid = true;
+
+  if(!validateClientCodeInput()) { isValid = false; }
+  if(!validateNameInput()) { isValid = false; }
+  if(!validateEmailInput()) { isValid = false; }
+
+  if(!isValid) { alert("Hay datosincorrectos en el formulario"); }
+
+}
+
+function validateClientCodeInput() {
+
+  let regex = /^[a-zA-Z]{3}\d{4}[/.#&]$/;
+  let input = document.getElementById("clientCodeInput");
+
+  if(input) {
+
+    if (regex.test(input.value)) {
+      return true;
+    }
+    
+  }
+
+  return false;
+
+}
+
+function validateNameInput() {
+
+  let input = document.getElementById("nameInput");
+
+  if(input.value.length >= 4 && input.value.length <= 15) {
+    return true;
+  }
+  
+  return false;  
+  
+}
+
+function validateEmailInput() {
+
+  let regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
+  let input = document.getElementById("emailInput");
+
+  if(regex.test(input.value)) {
+    return true;
+  }
+
+  return false;
+}
 
 function giveFunctionalityToHasClientCardInput(form) {
 
@@ -180,16 +238,16 @@ function giveFunctionalityToHasClientCardInput(form) {
   hasClientCardInputs.forEach(input => {
     input.addEventListener("input", () => {
       if (input.value === "yes" && input.checked) {
-        createClientCodeInput(form);
+        createClientCodeInputContainer(form);
       } else if (input.value === "no" && input.checked) {
-        removeClientCodeInput();
+        removeClientCodeInputContainer();
       }
     });
   });
 
 }
 
-function createClientCodeInput(form) {
+function createClientCodeInputContainer(form) {
 
   let col = createElementWithClassNames("div", ["col-12", "col-xxl-5"]);
   col.id = `clientCodeInputContainer`
@@ -214,7 +272,7 @@ function createClientCodeInput(form) {
 
 }
 
-function removeClientCodeInput() {
+function removeClientCodeInputContainer() {
 
   let clientCodeInputContainer = document.getElementById("clientCodeInputContainer");
 

@@ -4,6 +4,7 @@ var shoppingCartArray = {
   date: "",
   products: []
 };
+var shoppingCartWindow = null;
 
 window.addEventListener("load", () => startApplication());
 
@@ -84,6 +85,13 @@ function giveFunctionalityToForm() {
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    if(shoppingCartArray.products.length <= 0) { 
+      
+      alert("Añade alguna fruta.")
+      return;
+    
+    }
 
     validateInputs();
 
@@ -182,11 +190,13 @@ function validateInputs() {
 
   let isValid = true;
 
-  if(!validateClientCodeInput()) { isValid = false; }
-  if(!validateNameInput()) { isValid = false; }
-  if(!validateEmailInput()) { isValid = false; }
+  if(!validateClientCodeInput() || !validateNameInput() || !validateEmailInput()) { isValid = false; }
 
-  if(!isValid) { alert("Hay datosincorrectos en el formulario"); }
+  if(isValid) {    
+    createShoppingCartWindow();
+  } else {
+    alert("Hay datos incorrectos en el formulario");
+  }
 
 }
 
@@ -198,12 +208,18 @@ function validateClientCodeInput() {
   if(input) {
 
     if (regex.test(input.value)) {
+      removeLabelColourForValidInput(input.id);
       return true;
+    } else {
+      changeLabelColourForInvalidInput(input.id);
+      return false;
     }
     
-  }
+  } else {
 
-  return false;
+    return true;
+
+  }
 
 }
 
@@ -212,9 +228,11 @@ function validateNameInput() {
   let input = document.getElementById("nameInput");
 
   if(input.value.length >= 4 && input.value.length <= 15) {
+    removeLabelColourForValidInput(input.id);
     return true;
   }
   
+  changeLabelColourForInvalidInput(input.id);  
   return false;  
   
 }
@@ -225,9 +243,11 @@ function validateEmailInput() {
   let input = document.getElementById("emailInput");
 
   if(regex.test(input.value)) {
+    removeLabelColourForValidInput(input.id);
     return true;
   }
-
+  
+  changeLabelColourForInvalidInput(input.id);
   return false;
 }
 
@@ -261,7 +281,8 @@ function createClientCodeInputContainer(form) {
   input.required = true;
 
   let label = document.createElement("label");
-  label.innerText = "Código de cliente";
+  label.htmlFor = input.id;
+  label.textContent = "Código de cliente";
 
   form.insertBefore(col, form.lastElementChild);
     col.appendChild(inputContainer);
@@ -282,47 +303,45 @@ function removeClientCodeInputContainer() {
 
 }
 
-function sendShoppingCartToJsonServer() {
+function createShoppingCartWindow() {
+  let width = 500;
+  let height = 300;
 
-  shoppingCartArray.date = getDate();
-  let shoppingCartArrayToJSON = {
-    ...shoppingCartArray,
-    products: shoppingCartArray.products.map(product => ({
-      fruitID: product.fruitInfo.id,
-      totalAmount: (product.fruitInfo.price * product.totalKilos).toFixed(2),
-      totalKilos: product.totalKilos
-    }))
-  };
-  
-  let URL = `${host}/orders`;  
-  let init = {
-    method: "POST",
-    body: JSON.stringify(shoppingCartArrayToJSON),
-    headers: { "Content-Type": "application/json" }
-  };
+  let left = (window.innerWidth / 2) - (width / 2);
+  let top = (window.innerHeight / 2) - (height / 2);
 
-  fetch(URL, init)
-  .then(response => response.json())
-  .then(() =>  {
-    createShoppingCartMessage();
-    let window = createShoppingCartFruitPeculiaritiesWindow();
-    setDefaultStateOfApplication(window);
-  })
-  .catch(error => console.error(error));
+  if (shoppingCartWindow && !shoppingCartWindow.closed) {
+    shoppingCartWindow.close();
+  }
+
+  shoppingCartWindow = window.open(
+    "./subpage/window/shoppingCartWindow.html",
+    "shoppingCartWindow",
+    `width=${width},height=${height},top=${top},left=${left},toolbar=no,location=no,menubar=no,scrollbars=no,resizable=no`
+  );
+
+  shoppingCartWindow.addEventListener("load", () => {
+    let windowContainer = shoppingCartWindow.document.getElementById("windowContainer");
+
+    if (windowContainer) {
+      createShoppingCartMessage(windowContainer);
+    }
+    
+    giveFunctionalityToFinishOrderButton();
+
+    giveFunctionalityToGoBackButton();
+
+  });
   
 }
 
-function createShoppingCartMessage() {
-
-  deleteEmptyMessageElement("shoppingCartMessage");
-  
-  let shoppingCartMessage = document.getElementById("shoppingCartMessage");
+function createShoppingCartMessage(messageContainer) {
 
   let dateRow = createElementWithClassNames("div", ["row", "px-2", "align-items-center", "justify-content-center"]);
   let dateCol = createElementWithClassNames("div", ["col-auto"]);
   dateCol.innerHTML = getFullDate();
 
-  shoppingCartMessage.appendChild(dateRow);
+  messageContainer.appendChild(dateRow);
   dateRow.appendChild(dateCol);
 
   let shoppingCartTotalAmount = 0;
@@ -358,7 +377,7 @@ function createShoppingCartMessage() {
     let productTotalAmountCol = createElementWithClassNames("div", ["col-auto"]);
     productTotalAmountCol.innerHTML = `${ (product.fruitInfo.price * product.totalKilos).toFixed(2) }&#8364`;
 
-    shoppingCartMessage.appendChild(productRow);
+    messageContainer.appendChild(productRow);
     productRow.appendChild(productNameCol);
     productRow.appendChild(productKilosCol)
     productRow.appendChild(productPriceKiloCol)
@@ -374,72 +393,83 @@ function createShoppingCartMessage() {
   let averageAmountCol = createElementWithClassNames("div", ["col-auto"]);
   averageAmountCol.innerHTML = `Precio medio: ${ (shoppingCartTotalAmount / shoppingCartTotalKilos).toFixed(3) } &#8364/kg`;
 
-  shoppingCartMessage.appendChild(totalAmountRow);
+  messageContainer.appendChild(totalAmountRow);
   totalAmountRow.appendChild(totalAmountCol)
-  shoppingCartMessage.appendChild(averageAmountRow);
+  messageContainer.appendChild(averageAmountRow);
   averageAmountRow.appendChild(averageAmountCol)
 
 }
 
-function createShoppingCartFruitPeculiaritiesWindow() {
-  let width = 500;
-  let height = 300;
+function giveFunctionalityToFinishOrderButton() {
 
-  let left = (window.innerWidth / 2) - (width / 2);
-  let top = (window.innerHeight / 2) - (height / 2);
+  let button = shoppingCartWindow.document.getElementById("finishOrderButton");
 
-  let newWindow = window.open("./subpage/window/fruitInformationWindow.html", "fruitPeculiaritiesWindow", `width=${width},height=${height},top=${top},left=${left}`);
+  if(button) {
 
-  newWindow.onload = () => {
+    button.addEventListener("click", () => {
 
-    let windowContainer = newWindow.document.getElementById("windowContainer");
+      sendShoppingCartToJsonServer();
 
-    shoppingCartArray.products.forEach((product) => {
-
-      let paragraph = newWindow.document.createElement("div");
-      paragraph.classList.add("col-auto");
-
-      let productName = product.fruitInfo.name.endsWith("ón")
-        ? product.fruitInfo.name.replace("ón", "ones")
-        : `${product.fruitInfo.name}s`;
-
-      let message = `${productName} son frutas de ${product.fruitInfo.season.name}`;
-
-      if (product.fruitInfo.season.mask === "summer") {
-        let selection = product.fruitInfo.local ? "son de proximidad" : "NO son de proximidad";
-        message += `, ${selection} y se recogen en ${product.fruitInfo.region}.`;
-      } else {
-        let selection = product.fruitInfo.refrigerate ? " y es recomendable que su conserva sea en nevera." : " NO es necesaria su conserva en nevera.";
-        message += selection;
-      }
-
-      paragraph.innerText = message;
-      windowContainer.appendChild(paragraph);
     });
 
-  };
-
-  return newWindow;
+  }
 
 }
 
-function setDefaultStateOfApplication(window) {
+function giveFunctionalityToGoBackButton() {
 
-  setTimeout(() => {
+  let button = shoppingCartWindow.document.getElementById("goBackButton");
 
-    if (typeof window !== 'undefined' && window && !window.closed) {
-      window.close();
-    }
+  if(button) {
+
+    button.addEventListener("click", () => {
+
+      shoppingCartWindow.close();
+
+    });
+
+  }
+
+}
+
+function sendShoppingCartToJsonServer() {
+
+  shoppingCartArray.date = getDate();
+  let shoppingCartArrayToJSON = {
+    ...shoppingCartArray,
+    products: shoppingCartArray.products.map(product => ({
+      fruitID: product.fruitInfo.id,
+      totalAmount: (product.fruitInfo.price * product.totalKilos).toFixed(2),
+      totalKilos: product.totalKilos
+    }))
+  };
+  
+  let URL = `${host}/orders`;  
+  let init = {
+    method: "POST",
+    body: JSON.stringify(shoppingCartArrayToJSON),
+    headers: { "Content-Type": "application/json" }
+  };
+
+  fetch(URL, init)
+  .then(response => response.json())
+  .then(() =>  {
+    setDefaultStateOfApplication();
+  })
+  .catch(error => console.error(error));
+  
+}
+
+function setDefaultStateOfApplication() {
     
-    createEmptyMessageElement("productPanelMessage");
-    createEmptyMessageElement("shoppingCartMessage");
-    
-    shoppingCartArray = {
-      date: "",
-      products: []
-    };
+  createEmptyMessageElement("productPanelMessage");
+  
+  shoppingCartArray = {
+    date: "",
+    products: []
+  };
 
-  }, 10000);
+  document.getElementById("formContainer").reset();
 
 }
 
@@ -494,21 +524,43 @@ function createEmptyMessageElement(id) {
 
 function deleteEmptyMessageElement(id) {
 
-  if(id == "productPanelMessage") {
-
-    let emptyMessage = document.querySelector("#" + id + " h6");
-    if (emptyMessage) {
-      emptyMessage.remove();
-      document.getElementById(id).classList.replace("align-self-center", "align-self-start");
-    }
-
-  } else {
-
-    let emptyMessage = document.getElementById(id);
-    emptyMessage.replaceChildren();
+  let emptyMessage = document.querySelector("#" + id + " h6");
+  if (emptyMessage) {
+    emptyMessage.remove();
     document.getElementById(id).classList.replace("align-self-center", "align-self-start");
-
   }
+
+}
+
+function changeLabelColourForInvalidInput(input) {
+
+  let label = document.querySelector(`label[for="${input}"]`)
+
+  if (!label) {
+    console.warn(`Label not found for input: ${input}`);
+  }  
+
+  if(!label.classList.contains("text-danger")) {
+
+    label.classList.add("text-danger");
+
+  }  
+
+}
+
+function removeLabelColourForValidInput(input) {
+
+  let label = document.querySelector(`label[for="${input}"]`)
+
+  if (!label) {
+    console.warn(`Label not found for input: ${input}`);
+  }
+
+  if(label.classList.contains("text-danger")) {
+
+    label.classList.remove("text-danger");
+
+  }  
 
 }
 

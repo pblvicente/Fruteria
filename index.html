@@ -52,10 +52,11 @@
             class="row row-gap-3 py-3 align-items-center"
             method="POST"
             action="./index.html"
+            novalidate
           >            
             <div class="col-12 col-xxl-4">
               <div class="form-floating">
-                <input type="text" class="form-control" id="nameInput" name="nameInput" required>
+                <input type="text" class="form-control" id="nameInput" name="nameInput" minlength="4" maxlength="15" required>
                 <label for="nameInput">Nombre</label>
               </div>
             </div>
@@ -73,7 +74,7 @@
             </div>
             <div class="col-12 col-xxl-6">
               <div class="form-floating">
-                <input type="email" class="form-control" id="emailInput" name="emailInput" required>
+                <input type="email" class="form-control" id="emailInput" name="emailInput" pattern="^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$" required>
                 <label for="emailInput">Correo Electrónico</label>
               </div>
             </div>

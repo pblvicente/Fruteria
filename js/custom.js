@@ -190,11 +190,20 @@ function validateInputs() {
 
   let isValid = true;
 
-  if(!validateClientCodeInput() || !validateNameInput() || !validateEmailInput()) { isValid = false; }
+  if(!validateClientCodeInput()) { isValid = false; }    
+  if(!validateNameInput()) { isValid = false; }
+  if(!validateEmailInput()) { isValid = false; }
+  if(!validateLastNameInput()) { isValid = false; }
+  if(!validateAddressInput()) { isValid = false; }
+  if(!validateTypeOfPaymentInput()) { isValid = false; }
+  if(!validateHasClientCardInput()) { isValid = false; }
 
   if(isValid) {    
     createShoppingCartWindow();
   } else {
+    if (shoppingCartWindow && !shoppingCartWindow.closed) {
+      shoppingCartWindow.close();
+    }
     alert("Hay datos incorrectos en el formulario");
   }
 
@@ -203,11 +212,11 @@ function validateInputs() {
 function validateClientCodeInput() {
 
   let regex = /^[a-zA-Z]{3}\d{4}[/.#&]$/;
-  let input = document.getElementById("clientCodeInput");
+  let input = document.querySelector(`input[name="clientCodeInput"]`);
 
   if(input) {
 
-    if (regex.test(input.value)) {
+    if(!input.validity.valueMissing && regex.test(input.value)) {
       removeLabelColourForValidInput(input.id);
       return true;
     } else {
@@ -225,9 +234,9 @@ function validateClientCodeInput() {
 
 function validateNameInput() {
 
-  let input = document.getElementById("nameInput");
+  let input = document.querySelector(`input[name="nameInput"]`);
 
-  if(input.value.length >= 4 && input.value.length <= 15) {
+  if(!input.validity.valueMissing && (!input.validity.tooShort && !input.validity.tooLong)) {
     removeLabelColourForValidInput(input.id);
     return true;
   }
@@ -239,16 +248,85 @@ function validateNameInput() {
 
 function validateEmailInput() {
 
-  let regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
-  let input = document.getElementById("emailInput");
+  let input = document.querySelector(`input[name="emailInput"]`);
 
-  if(regex.test(input.value)) {
+  if(!input.validity.valueMissing && !input.validity.patternMismatch) {
+    removeLabelColourForValidInput(input.id);
+    return true;
+  }
+
+  changeLabelColourForInvalidInput(input.id);
+  return false;
+}
+
+function validateLastNameInput() {
+
+  let input = document.querySelector(`input[name="lastNameInput"]`);
+
+  if(!input.validity.valueMissing) {
     removeLabelColourForValidInput(input.id);
     return true;
   }
   
-  changeLabelColourForInvalidInput(input.id);
+  changeLabelColourForInvalidInput(input.id);  
+  return false;  
+  
+}
+
+function validateAddressInput() {
+
+  let input = document.querySelector(`input[name="addressInput"]`);
+
+  if(!input.validity.valueMissing) {
+    removeLabelColourForValidInput(input.id);
+    return true;
+  }
+  
+  changeLabelColourForInvalidInput(input.id);  
   return false;
+
+}
+
+function validateTypeOfPaymentInput() {
+
+  let inputs = document.querySelectorAll(`input[name="typeOfPaymentInput"]`);
+  let isChecked = false;
+
+  inputs.forEach(input => {
+    if (input.checked) {      
+      isChecked = true;
+    }
+  });
+
+  if(isChecked) {
+    removeLabelColourForValidInput("typeOfPaymentInput");
+  } else {
+    changeLabelColourForInvalidInput("typeOfPaymentInput");
+  }
+
+  return isChecked;
+
+}
+
+function validateHasClientCardInput() {
+
+  let inputs = document.querySelectorAll(`input[name="hasClientCardInput"]`);
+  let isChecked = false;
+  
+  inputs.forEach(input => {
+    if (input.checked) {
+      isChecked = true;
+    }
+  });
+  
+  if(isChecked) {
+    removeLabelColourForValidInput("hasClientCardInput");
+  } else {
+    changeLabelColourForInvalidInput("hasClientCardInput");
+  }
+  
+  return isChecked;
+
 }
 
 function giveFunctionalityToHasClientCardInput(form) {

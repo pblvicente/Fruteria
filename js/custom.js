@@ -193,10 +193,10 @@ function validateInputs() {
   if(!validateClientCodeInput()) { isValid = false; }    
   if(!validateNameInput()) { isValid = false; }
   if(!validateEmailInput()) { isValid = false; }
-  if(!validateLastNameInput()) { isValid = false; }
-  if(!validateAddressInput()) { isValid = false; }
-  if(!validateTypeOfPaymentInput()) { isValid = false; }
-  if(!validateHasClientCardInput()) { isValid = false; }
+  if(!validateRequiredInput("lastNameInput")) { isValid = false; }
+  if(!validateRequiredInput("addressInput")) { isValid = false; }
+  if(!validateRadioInputs("typeOfPaymentInput")) { isValid = false; }
+  if(!validateRadioInputs("hasClientCardInput")) { isValid = false; }
 
   if(isValid) {    
     createShoppingCartWindow();
@@ -259,37 +259,23 @@ function validateEmailInput() {
   return false;
 }
 
-function validateLastNameInput() {
+function validateRequiredInput(target) {
 
-  let input = document.querySelector(`input[name="lastNameInput"]`);
+  let input = document.querySelector(`input[name="${target}"]`);
 
   if(!input.validity.valueMissing) {
-    removeLabelColourForValidInput(input.id);
+    removeLabelColourForValidInput(target);
     return true;
   }
   
-  changeLabelColourForInvalidInput(input.id);  
+  changeLabelColourForInvalidInput(target);  
   return false;  
   
 }
 
-function validateAddressInput() {
+function validateRadioInputs(target) {
 
-  let input = document.querySelector(`input[name="addressInput"]`);
-
-  if(!input.validity.valueMissing) {
-    removeLabelColourForValidInput(input.id);
-    return true;
-  }
-  
-  changeLabelColourForInvalidInput(input.id);  
-  return false;
-
-}
-
-function validateTypeOfPaymentInput() {
-
-  let inputs = document.querySelectorAll(`input[name="typeOfPaymentInput"]`);
+  let inputs = document.querySelectorAll(`input[name="${target}"]`);
   let isChecked = false;
 
   inputs.forEach(input => {
@@ -299,32 +285,11 @@ function validateTypeOfPaymentInput() {
   });
 
   if(isChecked) {
-    removeLabelColourForValidInput("typeOfPaymentInput");
+    removeLabelColourForValidInput(target);
   } else {
-    changeLabelColourForInvalidInput("typeOfPaymentInput");
+    changeLabelColourForInvalidInput(target);
   }
 
-  return isChecked;
-
-}
-
-function validateHasClientCardInput() {
-
-  let inputs = document.querySelectorAll(`input[name="hasClientCardInput"]`);
-  let isChecked = false;
-  
-  inputs.forEach(input => {
-    if (input.checked) {
-      isChecked = true;
-    }
-  });
-  
-  if(isChecked) {
-    removeLabelColourForValidInput("hasClientCardInput");
-  } else {
-    changeLabelColourForInvalidInput("hasClientCardInput");
-  }
-  
   return isChecked;
 
 }

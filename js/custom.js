@@ -44,6 +44,9 @@ function createFruitElements() {
     
     let svgContainer = createElementWithClassNames("div", ["position-absolute", "top-0", "end-0", "m-1", "p-1", "bg-dark", "bg-opacity-25", "rounded"]);
 
+    let tooltipContainer = createElementWithClassNames("div", ["position-absolute", "top-100", "start-50", "translate-middle", "w-100", "bg-dark", "d-none"])
+    tooltipContainer.innerText = createFruitTooltipMessage(fruit);
+
     let infoContainer = createElementWithClassNames("div", ["position-absolute", "bottom-0", "start-50", "translate-middle-x", "w-100", "bg-dark", "bg-opacity-75"]);
 
     let infoRow = createElementWithClassNames("div", ["row", "justify-content-between", "card-text", "px-1"]);
@@ -63,6 +66,8 @@ function createFruitElements() {
     input.max = 100;
 
     image.addEventListener("error", () => { setDefaultImageSrc(image); });
+    image.addEventListener("mouseenter", () => { giveFunctionalityToMouseEnterFruitImage(tooltipContainer) });
+    image.addEventListener("mouseleave", () => { giveFunctionalityToMouseLeaveFruitImage(tooltipContainer) });
     image.addEventListener("click", () => { giveFunctionalityToClickOnFruitImage(fruit, input) });
 
     fruitContainer.appendChild(column);
@@ -71,6 +76,7 @@ function createFruitElements() {
           secondaryContainer.appendChild(image);     
           secondaryContainer.appendChild(svgContainer);
             giveIconsToSvgContainer(svgContainer, fruit);
+          secondaryContainer.appendChild(tooltipContainer)
           secondaryContainer.appendChild(infoContainer);
             infoContainer.appendChild(infoRow);
               infoRow.appendChild(colFruitName);
@@ -108,6 +114,38 @@ function giveFunctionalityToForm() {
 }
 
 // FUNCTIONALITIES
+
+function createFruitTooltipMessage(fruit) {
+
+  let fruitName = fruit.name.endsWith("ón")
+  ? fruit.name.replace("ón", "ones")
+  : `${fruit.name}s`;
+
+  let message = `${fruitName} son frutas de ${fruit.season.name}`;
+
+  if (fruit.season.mask === "summer") {
+    let selection = fruit.local ? "son de proximidad" : "NO son de proximidad";
+    message += `, ${selection} y se recogen en ${fruit.region}.`;
+  } else {
+    let selection = fruit.refrigerate ? " y es recomendable que su conserva sea en nevera." : " NO es necesaria su conserva en nevera.";
+    message += selection;
+  }
+
+  return message;
+
+}
+
+function giveFunctionalityToMouseEnterFruitImage(tooltipContainer) {
+  
+  if(tooltipContainer.classList.contains("d-none")) { tooltipContainer.classList.replace("d-none", "d-block"); }
+  
+}
+
+function giveFunctionalityToMouseLeaveFruitImage(tooltipContainer) {
+
+  if(tooltipContainer.classList.contains("d-block")) { tooltipContainer.classList.replace("d-block", "d-none"); }
+  
+}
 
 function giveFunctionalityToClickOnFruitImage(fruit, input) {  
 

@@ -5,10 +5,8 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 .imgCustom {
-
   width: 100%;
   max-width: 32px;
-
 }
 
 #pageTitle {
@@ -37,9 +35,7 @@
 
 @media screen and (min-width: 1400px) {
   .imgCustom {
-
     width: 32px;
-
   }
 
   #customContainer {

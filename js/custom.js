@@ -36,15 +36,15 @@ function createFruitElements() {
 
     let primaryContainer = createElementWithClassNames("div", ["bg-dark", "p-2", "rounded"]);
 
-    let secondaryContainer = createElementWithClassNames("div", ["position-relative", "overflow-hidden", "rounded", "border", "border-2"]);
+    let secondaryContainer = createElementWithClassNames("div", ["position-relative"]);
 
-    let image = createElementWithClassNames("img", ["bg-secondary-subtle", "ratio", "ratio-1x1"]);
+    let image = createElementWithClassNames("img", ["bg-secondary-subtle", "rounded", "ratio", "ratio-1x1", "border", "border-2"]);
     image.src = `./media/fruits/${fruit.mask}.jpg`;
-    image.alt = fruit.mask; 
-    
+    image.alt = fruit.mask;
+
     let svgContainer = createElementWithClassNames("div", ["position-absolute", "top-0", "end-0", "m-1", "p-1", "bg-dark", "bg-opacity-25", "rounded"]);
 
-    let tooltipContainer = createElementWithClassNames("div", ["position-absolute", "top-100", "start-50", "translate-middle", "w-100", "bg-dark", "d-none"])
+    let tooltipContainer = createElementWithClassNames("div", ["position-absolute", "top-100", "start-50", "translate-middle", "w-100", "bg-dark", "bg-opacity-75", "border", "border-1", "rounded", "fade", "d-none"])
     tooltipContainer.innerText = createFruitTooltipMessage(fruit);
 
     let infoContainer = createElementWithClassNames("div", ["position-absolute", "bottom-0", "start-50", "translate-middle-x", "w-100", "bg-dark", "bg-opacity-75"]);
@@ -75,12 +75,12 @@ function createFruitElements() {
         primaryContainer.appendChild(secondaryContainer);  
           secondaryContainer.appendChild(image);     
           secondaryContainer.appendChild(svgContainer);
-            giveIconsToSvgContainer(svgContainer, fruit);
-          secondaryContainer.appendChild(tooltipContainer)
+            giveIconsToSvgContainer(svgContainer, fruit);          
           secondaryContainer.appendChild(infoContainer);
             infoContainer.appendChild(infoRow);
               infoRow.appendChild(colFruitName);
               infoRow.appendChild(colFruitPrice);
+          secondaryContainer.appendChild(tooltipContainer)
         primaryContainer.appendChild(input);
   });
 }
@@ -138,12 +138,14 @@ function createFruitTooltipMessage(fruit) {
 function giveFunctionalityToMouseEnterFruitImage(tooltipContainer) {
   
   if(tooltipContainer.classList.contains("d-none")) { tooltipContainer.classList.replace("d-none", "d-block"); }
+  tooltipContainer.classList.add("show"); 
   
 }
 
 function giveFunctionalityToMouseLeaveFruitImage(tooltipContainer) {
 
   if(tooltipContainer.classList.contains("d-block")) { tooltipContainer.classList.replace("d-block", "d-none"); }
+  tooltipContainer.classList.remove("show"); 
   
 }
 

@@ -76,7 +76,6 @@ function createFruitElements() {
             infoContainer.appendChild(infoRow);
               infoRow.appendChild(colFruitName);
               infoRow.appendChild(colFruitPrice);
-          secondaryContainer.appendChild(tooltipContainer)
         primaryContainer.appendChild(input);
   });
 }

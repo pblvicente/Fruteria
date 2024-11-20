@@ -41,11 +41,9 @@ function createFruitElements() {
     let image = createElementWithClassNames("img", ["bg-secondary-subtle", "rounded", "ratio", "ratio-1x1", "border", "border-2"]);
     image.src = `./media/fruits/${fruit.mask}.jpg`;
     image.alt = fruit.mask;
+    image.title = createFruitTooltipMessage(fruit);
 
     let svgContainer = createElementWithClassNames("div", ["position-absolute", "top-0", "end-0", "m-1", "p-1", "bg-dark", "bg-opacity-25", "rounded"]);
-
-    let tooltipContainer = createElementWithClassNames("div", ["position-absolute", "top-100", "start-50", "translate-middle", "w-100", "bg-dark", "bg-opacity-75", "border", "border-1", "rounded", "fade", "d-none"])
-    tooltipContainer.innerText = createFruitTooltipMessage(fruit);
 
     let infoContainer = createElementWithClassNames("div", ["position-absolute", "bottom-0", "start-50", "translate-middle-x", "w-100", "bg-dark", "bg-opacity-75"]);
 
@@ -66,8 +64,6 @@ function createFruitElements() {
     input.max = 100;
 
     image.addEventListener("error", () => { setDefaultImageSrc(image); });
-    image.addEventListener("mouseenter", () => { giveFunctionalityToMouseEnterFruitImage(tooltipContainer) });
-    image.addEventListener("mouseleave", () => { giveFunctionalityToMouseLeaveFruitImage(tooltipContainer) });
     image.addEventListener("click", () => { giveFunctionalityToClickOnFruitImage(fruit, input) });
 
     fruitContainer.appendChild(column);
@@ -133,20 +129,6 @@ function createFruitTooltipMessage(fruit) {
 
   return message;
 
-}
-
-function giveFunctionalityToMouseEnterFruitImage(tooltipContainer) {
-  
-  if(tooltipContainer.classList.contains("d-none")) { tooltipContainer.classList.replace("d-none", "d-block"); }
-  tooltipContainer.classList.add("show"); 
-  
-}
-
-function giveFunctionalityToMouseLeaveFruitImage(tooltipContainer) {
-
-  if(tooltipContainer.classList.contains("d-block")) { tooltipContainer.classList.replace("d-block", "d-none"); }
-  tooltipContainer.classList.remove("show"); 
-  
 }
 
 function giveFunctionalityToClickOnFruitImage(fruit, input) {  

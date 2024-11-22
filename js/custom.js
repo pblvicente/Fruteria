@@ -600,15 +600,15 @@ function changeLabelColourForInvalidInput(input) {
 
   let label = document.querySelector(`label[for="${input}"]`)
 
-  if (!label) {
-    console.warn(`Label not found for input: ${input}`);
-  }  
+  if(label) {
 
-  if(!label.classList.contains("text-danger")) {
+    if(!label.classList.contains("text-danger")) {
 
-    label.classList.add("text-danger");
+      label.classList.add("text-danger");
 
-  }  
+    }
+
+  }
 
 }
 
@@ -616,15 +616,15 @@ function removeLabelColourForValidInput(input) {
 
   let label = document.querySelector(`label[for="${input}"]`)
 
-  if (!label) {
-    console.warn(`Label not found for input: ${input}`);
+  if(label) {
+
+    if(label.classList.contains("text-danger")) {
+
+      label.classList.remove("text-danger");
+
+    }  
+
   }
-
-  if(label.classList.contains("text-danger")) {
-
-    label.classList.remove("text-danger");
-
-  }  
 
 }
 
